@@ -1,0 +1,2622 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>MedPulse | نبض الطب</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/index.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Thmanyah Sans"', '"IBM Plex Sans Arabic"', 'sans-serif'],
+            display: ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
+            serif: ['"Thmanyah Serif Text"', '"Thmanyah Sans"', 'serif'],
+            en: ['"Plus Jakarta Sans"', '"Thmanyah Sans"', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @font-face {
+      font-family: "Thmanyah Sans";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-sans/woff2/thmanyah-sans-Light.woff2") format("woff2");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Thmanyah Sans";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-sans/woff2/thmanyah-sans-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Thmanyah Sans";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-sans/woff2/thmanyah-sans-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Thmanyah Sans";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-sans/woff2/thmanyah-sans-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Thmanyah Sans";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-sans/woff2/thmanyah-sans-Black.woff2") format("woff2");
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Thmanyah Serif Display";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-serif-display/woff2/thmanyah-serif-display-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Thmanyah Serif Text";
+      src: url("https://cdn.jsdelivr.net/gh/engdawood/thmanyah-font-web@4266a9d/fonts/thmanyah-serif-text/woff2/thmanyah-serif-text-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: "Thmanyah Sans", "IBM Plex Sans Arabic", sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+      letter-spacing: -0.01em;
+    }
+    .font-display-title {
+      font-family: "Thmanyah Serif Display", "Thmanyah Sans", serif;
+    }
+    .font-editorial {
+      font-family: "Thmanyah Serif Text", "Thmanyah Sans", serif;
+    }
+    .ltr-text {
+      direction: ltr;
+      text-align: left;
+      font-family: "Plus Jakarta Sans", "Thmanyah Sans", sans-serif;
+    }
+
+    .perspective-1000 { perspective: 1400px; }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 360px;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card-inner.is-flipped {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.5rem;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.25); border-radius: 9999px; }
+
+    .cloze-hidden {
+      background: rgba(16, 185, 129, 0.14);
+      color: transparent;
+      border-bottom: 2px dashed #10b981;
+      padding: 2px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+    .cloze-hidden.revealed {
+      color: #10b981;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .pro-card {
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .pro-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="bg-[#F6F5F2] text-slate-900 dark:bg-[#0A0D14] dark:text-slate-100 min-h-screen flex flex-col selection:bg-emerald-500 selection:text-white">
+
+  <!-- Minimalist Top Bar -->
+  <header class="sticky top-0 z-30 backdrop-blur-2xl bg-[#F6F5F2]/85 dark:bg-[#0A0D14]/85 border-b border-slate-200/70 dark:border-white/[0.06] px-4 lg:px-8 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand -->
+      <div id="brand-home-trigger" class="flex items-center gap-3 cursor-pointer">
+        <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l3.75-3.75 3 4.5 4.5-7.5 3 5.25h2.25" />
+          </svg>
+        </div>
+        <span class="text-lg font-bold tracking-tight text-slate-900 dark:text-white font-en">MedPulse</span>
+      </div>
+
+      <!-- Segmented Navigation -->
+      <nav class="flex items-center gap-1 bg-slate-200/60 dark:bg-white/[0.04] p-1 rounded-xl border border-slate-300/50 dark:border-white/[0.06] overflow-x-auto max-w-full">
+        <button id="nav-dashboard" data-tab="dashboard" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-600 text-white shadow-sm">
+          الأقسام
+        </button>
+        <button id="nav-upload" data-tab="upload" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          رفع ملف
+        </button>
+        <button id="nav-flashcards" data-tab="flashcards" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          البطاقات
+        </button>
+        <button id="nav-quiz" data-tab="quiz" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          الاختبار
+        </button>
+        <button id="nav-summary" data-tab="summary" class="nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          الملخص والسبورة
+        </button>
+      </nav>
+
+      <!-- Actions: Sync, Timer, Theme -->
+      <div class="flex items-center gap-2">
+        <button id="sync-modal-open-btn" class="px-3 py-1.5 rounded-xl bg-white dark:bg-white/[0.05] hover:bg-slate-100 dark:hover:bg-white/[0.09] text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-white/[0.07] text-xs font-bold transition flex items-center gap-1.5">
+          <span>☁️</span><span>مزامنة</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 bg-white dark:bg-white/[0.05] px-2.5 py-1.5 rounded-xl border border-slate-200/80 dark:border-white/[0.07]">
+          <span id="pomo-display" class="font-en text-xs font-bold text-slate-800 dark:text-slate-200">25:00</span>
+          <button id="pomo-toggle-btn" class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold">بدء</button>
+          <button id="pomo-reset-btn" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">↺</button>
+        </div>
+
+        <button id="theme-toggle-btn" class="p-2 rounded-xl bg-white dark:bg-white/[0.05] border border-slate-200/80 dark:border-white/[0.07] text-slate-700 dark:text-slate-200 hover:border-emerald-500/40 transition">
+          <span id="theme-icon">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Subject Filter Bar -->
+  <div class="border-b border-slate-200/60 dark:border-white/[0.05] px-4 lg:px-8 py-2.5">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="subject-pills-container"></div>
+      <button id="ribbon-add-dept-btn" class="shrink-0 px-3 py-1 rounded-lg bg-white dark:bg-white/[0.05] hover:bg-slate-100 dark:hover:bg-white/[0.09] text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-white/[0.07] text-xs font-bold transition">
+        + قسم
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 space-y-6">
+
+    <!-- Toast -->
+    <div id="toast-banner" class="hidden fixed bottom-6 left-6 z-50 max-w-sm bg-slate-900 dark:bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl border border-white/10 flex items-center gap-2.5 transition-all">
+      <span id="toast-icon" class="text-base">✨</span>
+      <p id="toast-message" class="text-xs font-bold"></p>
+    </div>
+
+    <!-- ==================== VIEW 1: DASHBOARD ==================== -->
+    <section id="view-dashboard" class="space-y-6">
+
+      <!-- Minimalist Metrics Strip -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-white dark:bg-[#111622] px-4 py-3.5 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] flex items-center justify-between">
+          <div>
+            <p class="text-[11px] text-slate-400 font-bold">البطاقات</p>
+            <p id="stat-total-cards" class="text-2xl font-bold font-en text-slate-900 dark:text-white mt-0.5">0</p>
+          </div>
+          <span class="text-lg opacity-80">🗂️</span>
+        </div>
+
+        <div class="bg-white dark:bg-[#111622] px-4 py-3.5 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] flex items-center justify-between">
+          <div>
+            <p class="text-[11px] text-slate-400 font-bold">المستحقة اليوم</p>
+            <p id="stat-due-cards" class="text-2xl font-bold font-en text-amber-500 mt-0.5">0</p>
+            <p id="stat-leech-count" class="hidden"></p>
+          </div>
+          <span class="text-lg opacity-80">⚡</span>
+        </div>
+
+        <div class="bg-white dark:bg-[#111622] px-4 py-3.5 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] flex items-center justify-between">
+          <div>
+            <p class="text-[11px] text-slate-400 font-bold">الأسئلة</p>
+            <p id="stat-total-quiz" class="text-2xl font-bold font-en text-sky-500 mt-0.5">0</p>
+          </div>
+          <span class="text-lg opacity-80">🩺</span>
+        </div>
+
+        <div class="bg-white dark:bg-[#111622] px-4 py-3.5 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] flex items-center justify-between">
+          <div>
+            <p class="text-[11px] text-slate-400 font-bold">الذاكرة</p>
+            <p id="stat-mastery-rate" class="text-2xl font-bold font-en text-emerald-500 mt-0.5">0%</p>
+          </div>
+          <span class="text-lg opacity-80">📈</span>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 1A: DEPARTMENTS GRID -->
+      <div id="subview-all-departments" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-bold">الأقسام</h2>
+          <div class="flex items-center gap-2">
+            <button id="cta-upload-btn" class="px-3.5 py-1.5 rounded-xl bg-white dark:bg-white/[0.05] hover:bg-slate-100 dark:hover:bg-white/[0.09] border border-slate-200/80 dark:border-white/[0.07] text-xs font-bold transition">
+              + رفع محاضرة
+            </button>
+            <button id="cta-study-due-btn" class="hidden">بدء المراجعة اليومية</button>
+            <button id="add-new-dept-btn" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition">
+              + إضافة قسم
+            </button>
+            <button id="reset-subject-filter-btn" class="hidden">الكل</button>
+          </div>
+        </div>
+
+        <div id="departments-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 1B: LECTURES LIST -->
+      <div id="subview-department-lectures" class="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200/70 dark:border-white/[0.06] p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <button id="back-to-departments-btn" class="hidden px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/[0.05] hover:bg-slate-200 dark:hover:bg-white/[0.1] text-xs font-bold transition">
+              → الأقسام
+            </button>
+            <h3 id="dept-header-title" class="text-base font-bold">المحاضرات</h3>
+            <span id="active-subject-badge" class="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 font-bold font-en">All</span>
+            <p id="dept-header-subtitle" class="hidden"></p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <input id="lecture-search-input" type="text" placeholder="بحث..." class="w-44 sm:w-56 px-3.5 py-1.5 rounded-xl text-xs bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] focus:outline-none focus:border-emerald-500" />
+            <button id="dept-add-lecture-btn" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition">
+              + رفع محاضرة
+            </button>
+            <button id="delete-all-lectures-btn" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-xs font-bold transition">
+              حذف الكل
+            </button>
+          </div>
+        </div>
+
+        <div id="lectures-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- SUB-VIEW 1C: SINGLE LECTURE WORKSPACE HUB -->
+      <div id="subview-lecture-hub" class="hidden bg-white dark:bg-[#111622] rounded-3xl border border-slate-200/80 dark:border-white/[0.08] p-6 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/60 dark:border-white/[0.06] pb-4">
+          <div class="flex items-center gap-3">
+            <button id="hub-back-to-dept-btn" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/[0.05] hover:bg-slate-200 dark:hover:bg-white/[0.1] text-xs font-bold transition">
+              → رجوع
+            </button>
+            <div>
+              <div class="flex items-center gap-2">
+                <span id="hub-lecture-dept-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 font-en">Anatomy</span>
+                <span id="hub-lecture-date" class="text-[11px] text-slate-400 font-en"></span>
+              </div>
+              <h2 id="hub-lecture-title" class="text-lg md:text-xl font-bold mt-0.5 ltr-text"></h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="hub-edit-lecture-btn" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/[0.05] hover:bg-slate-200 dark:hover:bg-white/[0.1] text-xs font-bold transition">
+              تعديل
+            </button>
+            <button id="hub-delete-lecture-btn" class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 text-xs font-bold transition">
+              حذف
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button id="hub-go-flashcards-btn" class="pro-card text-right p-5 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] hover:border-emerald-500 flex flex-col justify-between gap-4">
+            <div class="flex items-center justify-between w-full">
+              <span class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-xl">🗂️</span>
+              <span id="hub-fc-count" class="text-xs font-bold text-emerald-500 font-en">0</span>
+            </div>
+            <div>
+              <h4 class="text-base font-bold">الفلاش كاردز</h4>
+              <p class="text-xs text-slate-400 mt-0.5">مراجعة البطاقات</p>
+            </div>
+          </button>
+
+          <button id="hub-go-quiz-btn" class="pro-card text-right p-5 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] hover:border-sky-500 flex flex-col justify-between gap-4">
+            <div class="flex items-center justify-between w-full">
+              <span class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-500 flex items-center justify-center text-xl">🩺</span>
+              <span id="hub-quiz-count" class="text-xs font-bold text-sky-500 font-en">0</span>
+            </div>
+            <div>
+              <h4 class="text-base font-bold">الاختبار</h4>
+              <p class="text-xs text-slate-400 mt-0.5">أسئلة اختيار من متعدد</p>
+            </div>
+          </button>
+
+          <button id="hub-go-summary-btn" class="pro-card text-right p-5 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] hover:border-purple-500 flex flex-col justify-between gap-4">
+            <div class="flex items-center justify-between w-full">
+              <span class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-500 flex items-center justify-center text-xl">✍️</span>
+              <span id="hub-sum-count" class="text-xs font-bold text-purple-500 font-en">0</span>
+            </div>
+            <div>
+              <h4 class="text-base font-bold">الملخص والسبورة</h4>
+              <p class="text-xs text-slate-400 mt-0.5">النقاط والملاحظات</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW 2: UPLOAD ==================== -->
+    <section id="view-upload" class="hidden">
+      <div class="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200/70 dark:border-white/[0.06] p-6 space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/[0.06] pb-4">
+          <h2 class="text-lg font-bold">رفع محاضرة</h2>
+          <button id="load-sample-lecture-btn" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-white/[0.05] hover:bg-slate-200 dark:hover:bg-white/[0.1] text-xs font-bold transition">
+            نموذج تجريبي
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5 space-y-4">
+            <div>
+              <label class="block text-xs font-bold mb-1.5 text-slate-500">القسم</label>
+              <select id="upload-subject-select" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-sm font-bold focus:outline-none focus:border-emerald-500"></select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold mb-1.5 text-slate-500">العنوان</label>
+              <input id="upload-lecture-title" type="text" placeholder="اسم المحاضرة..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-sm focus:outline-none focus:border-emerald-500" />
+            </div>
+
+            <div id="dropzone-area" class="border-2 border-dashed border-slate-300 dark:border-white/15 hover:border-emerald-500 rounded-2xl p-6 text-center bg-[#F6F5F2]/50 dark:bg-[#0A0D14]/50 transition cursor-pointer">
+              <input id="lecture-file-input" type="file" accept=".pdf,.txt,.md,.csv" class="hidden" />
+              <div class="text-2xl mb-2">📂</div>
+              <p class="text-xs md:text-sm font-bold">اختر ملف PDF أو TXT</p>
+              <p id="upload-file-status" class="text-xs font-bold text-emerald-500 mt-2 hidden"></p>
+            </div>
+
+            <div class="bg-[#F6F5F2] dark:bg-[#0A0D14] p-3.5 rounded-2xl grid grid-cols-2 gap-2 text-xs border border-slate-200/70 dark:border-white/[0.06]">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input id="opt-gen-flashcards" type="checkbox" checked class="accent-emerald-500 w-4 h-4 rounded" />
+                <span>فلاش كاردز</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input id="opt-gen-cloze" type="checkbox" checked class="accent-emerald-500 w-4 h-4 rounded" />
+                <span>إخفاء مصطلحات</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input id="opt-gen-mcq" type="checkbox" checked class="accent-emerald-500 w-4 h-4 rounded" />
+                <span>اختبار</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input id="opt-gen-summary" type="checkbox" checked class="accent-emerald-500 w-4 h-4 rounded" />
+                <span>ملخص</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+            <div class="flex-1 flex flex-col">
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="text-xs font-bold text-slate-500">النص</label>
+                <span id="char-counter" class="text-[11px] text-slate-400">0</span>
+              </div>
+              <textarea id="upload-lecture-text" rows="11" placeholder="الصق نص المحاضرة أو ارفع ملفاً..." class="w-full flex-1 p-4 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-xs md:text-sm font-en leading-relaxed focus:outline-none focus:border-emerald-500"></textarea>
+            </div>
+
+            <div class="flex items-center justify-end gap-2">
+              <button id="clear-upload-btn" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-xs font-bold">
+                مسح
+              </button>
+              <button id="process-lecture-btn" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs md:text-sm transition">
+                إنشاء البطاقات والاختبار
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: FLASHCARDS ==================== -->
+    <section id="view-flashcards" class="hidden space-y-5">
+      <!-- Top Bar -->
+      <div class="bg-white dark:bg-[#111622] p-3.5 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] flex flex-wrap items-center justify-between gap-2.5">
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="fc-back-to-hub-btn" class="px-3 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">
+            → رجوع
+          </button>
+          <select id="fc-lecture-select" class="px-3 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-xs font-bold focus:outline-none"></select>
+
+          <div class="flex items-center bg-[#F6F5F2] dark:bg-[#0A0D14] p-1 rounded-xl border border-slate-200/70 dark:border-white/[0.06] text-xs font-bold">
+            <button id="fc-mode-anki" class="px-3 py-1 rounded-lg bg-emerald-600 text-white transition">بطاقات</button>
+            <button id="fc-mode-cloze" class="px-3 py-1 rounded-lg text-slate-500 transition">إخفاء</button>
+            <button id="fc-mode-list" class="px-3 py-1 rounded-lg text-slate-500 transition">جدول</button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button data-srs-filter="smart" class="srs-queue-filter-btn px-2.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold transition">ذكي</button>
+          <button data-srs-filter="due" class="srs-queue-filter-btn px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-slate-500 text-xs font-bold transition">المستحق</button>
+          <button data-srs-filter="weak" class="srs-queue-filter-btn px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-rose-500 text-xs font-bold transition">الصعب</button>
+          <span class="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1"></span>
+          <button id="fc-shuffle-btn" title="خلط" class="px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">🔀</button>
+          <button id="fc-edit-current-btn" title="تعديل" class="px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">✏️</button>
+          <button id="fc-delete-current-btn" title="حذف" class="px-2.5 py-1.5 rounded-xl bg-rose-500/10 text-rose-500 text-xs font-bold">🗑️</button>
+          <button id="fc-add-modal-btn" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">+ بطاقة</button>
+        </div>
+      </div>
+
+      <!-- Mode A: 3D Card -->
+      <div id="fc-interactive-container" class="max-w-3xl mx-auto space-y-4">
+        <div class="flex items-center justify-between text-xs font-bold text-slate-400">
+          <span id="fc-card-subject-tag" class="px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 font-en">Anatomy</span>
+          <span id="fc-progress-text" class="font-en">0 / 0</span>
+          <div class="flex items-center gap-2">
+            <span id="fc-telemetry-badge" class="text-[11px] font-en text-slate-400">250%</span>
+            <span id="fc-srs-badge" class="px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-500">جديدة</span>
+          </div>
+        </div>
+
+        <div class="w-full h-1.5 bg-slate-200 dark:bg-white/[0.06] rounded-full overflow-hidden">
+          <div id="fc-progress-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <div id="fc-card-wrapper" class="perspective-1000 cursor-pointer select-none">
+          <div id="fc-card-inner" class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front bg-white dark:bg-[#111622] border border-slate-200/80 dark:border-white/[0.08] shadow-lg p-8 md:p-12 flex flex-col justify-between">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-en">
+                <span id="fc-lecture-footer">Lecture</span>
+                <span>QUESTION</span>
+              </div>
+              <div class="my-auto py-6 text-center space-y-3">
+                <p id="fc-front-text" class="text-lg md:text-2xl font-bold text-slate-900 dark:text-white leading-relaxed ltr-text text-center"></p>
+                <p id="fc-front-hint" class="text-xs text-emerald-500 font-bold"></p>
+              </div>
+              <div class="text-center text-[11px] text-slate-400">
+                <span id="fc-next-due-label">Space</span>
+              </div>
+            </div>
+
+            <!-- Back -->
+            <div class="flip-card-back bg-[#0E171B] text-white border border-emerald-500/30 shadow-xl p-8 md:p-12 flex flex-col justify-between">
+              <div class="flex items-center justify-between text-[11px] text-emerald-400 font-en">
+                <span>ANSWER</span>
+                <span>SRS</span>
+              </div>
+              <div class="my-auto py-4 text-center space-y-4">
+                <p id="fc-back-text" class="text-base md:text-xl font-bold text-white leading-relaxed ltr-text text-center"></p>
+                <div id="fc-back-extra" class="text-xs text-emerald-200/80 bg-white/[0.04] p-3 rounded-xl border border-white/10 max-w-xl mx-auto"></div>
+              </div>
+              <div class="text-center text-[11px] text-slate-500 font-en">1 · 2 · 3 · 4</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rating Bar -->
+        <div class="grid grid-cols-4 gap-2.5">
+          <button data-srs="again" class="srs-rate-btn py-3 px-2 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-500 flex flex-col items-center transition">
+            <span class="text-xs font-bold">إعادة</span>
+            <span id="srs-sub-again" class="text-[11px] opacity-75 mt-0.5 font-en">1m</span>
+          </button>
+          <button data-srs="hard" class="srs-rate-btn py-3 px-2 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-500 flex flex-col items-center transition">
+            <span class="text-xs font-bold">صعب</span>
+            <span id="srs-sub-hard" class="text-[11px] opacity-75 mt-0.5 font-en">10m</span>
+          </button>
+          <button data-srs="good" class="srs-rate-btn py-3 px-2 rounded-2xl bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/20 text-teal-500 flex flex-col items-center transition">
+            <span class="text-xs font-bold">جيد</span>
+            <span id="srs-sub-good" class="text-[11px] opacity-75 mt-0.5 font-en">1d</span>
+          </button>
+          <button data-srs="easy" class="srs-rate-btn py-3 px-2 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-500 flex flex-col items-center transition">
+            <span class="text-xs font-bold">سهل</span>
+            <span id="srs-sub-easy" class="text-[11px] opacity-75 mt-0.5 font-en">4d</span>
+          </button>
+        </div>
+
+        <!-- Prev / Flip / Next -->
+        <div class="flex items-center justify-between pt-1">
+          <button id="fc-prev-btn" class="px-4 py-2 rounded-xl bg-white dark:bg-[#111622] border border-slate-200/70 dark:border-white/[0.06] text-xs font-bold">→</button>
+          <button id="fc-flip-btn" class="px-6 py-2 rounded-xl bg-white dark:bg-[#111622] border border-slate-200/70 dark:border-white/[0.06] text-xs font-bold">قلب</button>
+          <button id="fc-next-btn" class="px-4 py-2 rounded-xl bg-white dark:bg-[#111622] border border-slate-200/70 dark:border-white/[0.06] text-xs font-bold">←</button>
+        </div>
+      </div>
+
+      <!-- Mode B: Cloze -->
+      <div id="fc-cloze-container" class="hidden max-w-4xl mx-auto space-y-3">
+        <div class="flex justify-end">
+          <button id="cloze-reveal-all-btn" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">إظهار / إخفاء الكل</button>
+        </div>
+        <div id="fc-cloze-list" class="space-y-2.5"></div>
+      </div>
+
+      <!-- Mode C: Table List -->
+      <div id="fc-list-container" class="hidden space-y-2.5"></div>
+
+      <!-- Add/Edit Flashcard Modal -->
+      <div id="fc-add-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+          <div class="flex items-center justify-between">
+            <h3 id="fc-modal-title" class="text-base font-bold">بطاقة جديدة</h3>
+            <button id="fc-close-modal-btn" class="text-slate-400 hover:text-slate-200">✕</button>
+          </div>
+          <div class="space-y-3">
+            <input id="new-fc-front" type="text" placeholder="السؤال أو المصطلح..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm" />
+            <textarea id="new-fc-back" rows="3" placeholder="الإجابة..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm"></textarea>
+            <input id="new-fc-hint" type="text" placeholder="ملاحظة إضافية (اختياري)..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm" />
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button id="fc-cancel-modal-btn" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-xs font-bold">إلغاء</button>
+            <button id="fc-save-card-btn" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">حفظ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: QUIZ ==================== -->
+    <section id="view-quiz" class="hidden space-y-5">
+      <div class="bg-white dark:bg-[#111622] p-3.5 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] flex flex-wrap items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2">
+          <button id="quiz-back-to-hub-btn" class="px-3 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">→ رجوع</button>
+          <select id="quiz-lecture-select" class="px-3 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-xs font-bold focus:outline-none"></select>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span id="quiz-live-score" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-500 text-xs font-bold font-en">0 / 0</span>
+          <button id="quiz-edit-q-btn" title="تعديل" class="px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">✏️</button>
+          <button id="quiz-delete-q-btn" title="حذف" class="px-2.5 py-1.5 rounded-xl bg-rose-500/10 text-rose-500 text-xs font-bold">🗑️</button>
+          <button id="quiz-add-q-btn" class="px-3 py-1.5 rounded-xl bg-sky-600 text-white text-xs font-bold">+ سؤال</button>
+          <button id="quiz-restart-btn" title="إعادة" class="px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">↺</button>
+        </div>
+      </div>
+
+      <div id="quiz-active-box" class="max-w-3xl mx-auto bg-white dark:bg-[#111622] rounded-3xl border border-slate-200/70 dark:border-white/[0.06] p-6 md:p-8 space-y-6">
+        <div class="flex items-center justify-between text-xs font-bold text-slate-400 font-en">
+          <span id="quiz-subject-badge" class="px-2.5 py-0.5 rounded-md bg-sky-500/10 text-sky-500">Quiz</span>
+          <span id="quiz-q-counter">0 / 0</span>
+        </div>
+
+        <div class="space-y-2">
+          <p id="quiz-q-text" class="text-base md:text-xl font-bold text-slate-900 dark:text-white leading-relaxed ltr-text"></p>
+          <p id="quiz-q-ar-hint" class="text-xs text-slate-400"></p>
+        </div>
+
+        <div id="quiz-options-container" class="space-y-2.5"></div>
+
+        <div id="quiz-explanation-box" class="hidden p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-1">
+          <p id="quiz-feedback-title" class="text-xs font-bold text-emerald-500"></p>
+          <p id="quiz-explanation-text" class="text-xs md:text-sm text-slate-700 dark:text-slate-200 leading-relaxed ltr-text"></p>
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-slate-200/60 dark:border-white/[0.06]">
+          <button id="quiz-prev-q-btn" class="px-4 py-2 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">→ السابق</button>
+          <button id="quiz-next-q-btn" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">التالي ←</button>
+        </div>
+      </div>
+
+      <!-- Quiz Modal -->
+      <div id="quiz-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div class="flex items-center justify-between">
+            <h3 id="quiz-modal-title" class="text-base font-bold">سؤال جديد</h3>
+            <button id="quiz-close-modal-btn" class="text-slate-400 hover:text-slate-200">✕</button>
+          </div>
+          <div class="space-y-3">
+            <textarea id="qm-question" rows="2" placeholder="السؤال..." class="w-full px-3.5 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm"></textarea>
+            <div class="grid grid-cols-2 gap-2">
+              <input id="qm-opt-0" type="text" placeholder="A" class="w-full px-3 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs" />
+              <input id="qm-opt-1" type="text" placeholder="B" class="w-full px-3 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs" />
+              <input id="qm-opt-2" type="text" placeholder="C" class="w-full px-3 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs" />
+              <input id="qm-opt-3" type="text" placeholder="D" class="w-full px-3 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs" />
+            </div>
+            <select id="qm-answer" class="w-full px-3.5 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs font-bold">
+              <option value="0">الإجابة الصحيحة: A</option>
+              <option value="1">الإجابة الصحيحة: B</option>
+              <option value="2">الإجابة الصحيحة: C</option>
+              <option value="3">الإجابة الصحيحة: D</option>
+            </select>
+            <textarea id="qm-explanation" rows="2" placeholder="الشرح..." class="w-full px-3.5 py-2 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs"></textarea>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button id="quiz-cancel-modal-btn" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-xs font-bold">إلغاء</button>
+            <button id="quiz-save-q-btn" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">حفظ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 5: SUMMARY & SKETCHPAD ==================== -->
+    <section id="view-summary" class="hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-7 bg-white dark:bg-[#111622] rounded-3xl border border-slate-200/70 dark:border-white/[0.06] p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/[0.06] pb-3.5">
+            <div class="flex items-center gap-2">
+              <button id="sum-back-to-hub-btn" class="px-3 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-xs font-bold">→ رجوع</button>
+              <h3 class="text-base font-bold">الملخص</h3>
+            </div>
+            <select id="summary-lecture-select" class="px-3 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-xs font-bold focus:outline-none"></select>
+          </div>
+
+          <div id="summary-content-box" class="space-y-2.5 text-xs md:text-sm leading-relaxed font-editorial"></div>
+
+          <div class="pt-4 border-t border-slate-200/60 dark:border-white/[0.06] space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold text-slate-400">الملاحظات</label>
+              <span id="notes-save-indicator" class="text-[11px] text-slate-400">محفوظ</span>
+            </div>
+            <textarea id="personal-lecture-notes" rows="4" placeholder="ملاحظاتك..." class="w-full p-3.5 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] text-xs md:text-sm font-editorial focus:outline-none focus:border-emerald-500"></textarea>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-white dark:bg-[#111622] rounded-3xl border border-slate-200/70 dark:border-white/[0.06] p-6 flex flex-col justify-between space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/[0.06] pb-3.5">
+            <h3 class="text-base font-bold">السبورة</h3>
+            <div class="flex items-center gap-1.5">
+              <button data-color="#10b981" class="pen-color-btn w-5 h-5 rounded-full bg-emerald-500 ring-2 ring-offset-2 ring-emerald-500"></button>
+              <button data-color="#f43f5e" class="pen-color-btn w-5 h-5 rounded-full bg-rose-500"></button>
+              <button data-color="#38bdf8" class="pen-color-btn w-5 h-5 rounded-full bg-sky-400"></button>
+              <button data-color="#facc15" class="pen-color-btn w-5 h-5 rounded-full bg-yellow-400"></button>
+            </div>
+          </div>
+
+          <div class="relative w-full h-80 bg-[#080B11] rounded-2xl border border-slate-800 overflow-hidden touch-none">
+            <canvas id="ipad-sketch-canvas" class="w-full h-full cursor-crosshair"></canvas>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <input id="pen-size-slider" type="range" min="1" max="12" value="3" class="accent-emerald-500 w-24" />
+            <button id="clear-canvas-btn" class="px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-500 text-xs font-bold">مسح</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MODAL 1: EDIT LECTURE ==================== -->
+    <div id="edit-lecture-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 rounded-3xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold">تعديل المحاضرة</h3>
+          <button id="close-edit-lec-modal-btn" class="text-slate-400 hover:text-slate-200">✕</button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <input id="edit-lec-title" type="text" placeholder="العنوان" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm font-bold" />
+          <select id="edit-lec-subject" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm font-bold"></select>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-slate-400">المحتوى</span>
+            <label class="text-xs font-bold text-emerald-500 cursor-pointer hover:underline">
+              استبدال الملف
+              <input id="edit-lec-file-input" type="file" accept=".pdf,.txt,.md" class="hidden" />
+            </label>
+          </div>
+          <textarea id="edit-lec-summary-text" rows="6" class="w-full p-3.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm font-en leading-relaxed"></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <label class="flex items-center gap-2 text-xs font-bold cursor-pointer">
+            <input id="edit-lec-regenerate-chk" type="checkbox" class="accent-emerald-500 w-4 h-4 rounded" />
+            <span>إعادة توليد البطاقات والأسئلة</span>
+          </label>
+          <div class="flex items-center gap-2">
+            <button id="cancel-edit-lec-btn" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-xs font-bold">إلغاء</button>
+            <button id="save-edit-lec-btn" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">حفظ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 2: ADD / EDIT DEPARTMENT ==================== -->
+    <div id="dept-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <h3 id="dept-modal-title" class="text-base font-bold">إضافة قسم</h3>
+          <button id="close-dept-modal-btn" class="text-slate-400 hover:text-slate-200">✕</button>
+        </div>
+
+        <div class="space-y-3">
+          <input id="dept-name-en" type="text" placeholder="الاسم بالإنجليزية (مثال: Anatomy)" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm font-bold font-en" />
+          <input id="dept-name-ar" type="text" placeholder="الاسم بالعربية (مثال: علم التشريح)" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs md:text-sm font-bold" />
+          <div class="grid grid-cols-2 gap-2.5">
+            <input id="dept-icon-input" type="text" value="🩺" placeholder="أيقونة" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-sm text-center" />
+            <select id="dept-color-select" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs font-bold">
+              <option value="emerald">زمردي</option>
+              <option value="rose">وردي</option>
+              <option value="amber">كهرماني</option>
+              <option value="purple">بنفسجي</option>
+              <option value="sky">سماوي</option>
+              <option value="teal">تركواز</option>
+              <option value="red">أحمر</option>
+            </select>
+          </div>
+          <input id="dept-desc-input" type="text" placeholder="وصف مختصر (اختياري)" class="w-full px-3.5 py-2.5 rounded-xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200 dark:border-white/10 text-xs" />
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button id="cancel-dept-modal-btn" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-xs font-bold">إلغاء</button>
+          <button id="save-dept-modal-btn" class="px-5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">حفظ</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL 3: SYNC ==================== -->
+    <div id="sync-modal" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-slate-200/60 dark:border-white/[0.06] pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">☁️</span>
+            <h3 class="text-base font-bold">مزامنة الآيباد واللابتوب</h3>
+          </div>
+          <button id="close-sync-modal-btn" class="text-slate-400 hover:text-slate-200">✕</button>
+        </div>
+
+        <!-- Method 1: Email Sync -->
+        <div class="p-4 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+              <span>📧</span><span>المزامنة بالإيميل السحابي</span>
+            </span>
+            <span id="sync-cloud-status" class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500">جاهز</span>
+          </div>
+          <input id="sync-email-input" type="email" placeholder="اكتب إيميلك (مثال: doctor@gmail.com)" class="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 text-xs focus:outline-none focus:border-emerald-500 font-en" />
+          <div class="grid grid-cols-2 gap-2">
+            <button id="cloud-sync-save-btn" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <span>📤</span><span>حفظ سحابي بإيميلي</span>
+            </button>
+            <button id="cloud-sync-load-btn" class="py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <span>📥</span><span>استرجاع من إيميلي</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Method 2: 6-Digit Simple PIN -->
+        <div class="p-4 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/80 dark:border-white/[0.07] space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+              <span>🔑</span><span>المزامنة برمز سريع (6 أرقام)</span>
+            </span>
+            <span id="sync-pin-display" class="font-en font-bold text-xs px-2.5 py-0.5 rounded-lg bg-emerald-500/10 text-emerald-500 tracking-wider">MED-4829</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="sync-pin-input" type="text" maxlength="8" placeholder="اكتب الرمز هنا بالآيباد..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-white dark:bg-[#111622] border border-slate-200 dark:border-white/10 text-xs text-center font-en tracking-widest focus:outline-none focus:border-sky-500" />
+            <button id="sync-pin-load-btn" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition">
+              مزامنة بالرمز
+            </button>
+          </div>
+        </div>
+
+        <!-- Method 3: 1-Click AirDrop / Email Share / File -->
+        <div class="space-y-2 pt-1 border-t border-slate-200/60 dark:border-white/[0.06]">
+          <button id="email-share-native-btn" class="w-full py-2.5 rounded-xl bg-white dark:bg-[#111622] hover:bg-slate-100 dark:hover:bg-white/[0.05] border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-200 transition flex items-center justify-center gap-1.5 shadow-sm">
+            <span>📲</span><span>إرسال مباشر لإيميلي أو AirDrop للآيباد</span>
+          </button>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="export-sync-file-btn" class="py-2 px-3 rounded-xl bg-slate-100 dark:bg-white/[0.04] hover:bg-slate-200 dark:hover:bg-white/[0.08] text-xs font-bold text-slate-600 dark:text-slate-300 transition text-center">
+              💾 تنزيل ملف المزامنة
+            </button>
+            <label class="py-2 px-3 rounded-xl bg-slate-100 dark:bg-white/[0.04] hover:bg-slate-200 dark:hover:bg-white/[0.08] text-xs font-bold text-slate-600 dark:text-slate-300 transition text-center cursor-pointer">
+              📂 فتح ملف المزامنة
+              <input id="import-sync-file-input" type="file" accept=".json" class="hidden" />
+            </label>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input id="sync-merge-mode-chk" type="checkbox" checked class="accent-emerald-500 w-3.5 h-3.5 rounded" />
+            <span>دمج مع المحاضرات الحالية</span>
+          </label>
+          <span id="sync-status-msg" class="text-emerald-500 font-bold hidden"></span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    const COLOR_THEMES = {
+      rose: { color: 'from-rose-500 to-pink-600', badgeBg: 'bg-rose-500/10 text-rose-500' },
+      amber: { color: 'from-amber-500 to-orange-600', badgeBg: 'bg-amber-500/10 text-amber-500' },
+      purple: { color: 'from-purple-500 to-fuchsia-600', badgeBg: 'bg-purple-500/10 text-purple-500' },
+      emerald: { color: 'from-emerald-500 to-teal-600', badgeBg: 'bg-emerald-500/10 text-emerald-500' },
+      red: { color: 'from-red-500 to-rose-700', badgeBg: 'bg-red-500/10 text-red-500' },
+      sky: { color: 'from-sky-500 to-indigo-600', badgeBg: 'bg-sky-500/10 text-sky-500' },
+      teal: { color: 'from-teal-500 to-cyan-600', badgeBg: 'bg-teal-500/10 text-teal-500' }
+    };
+
+    const INITIAL_SUBJECTS = [
+      { id: 'anatomy', nameAr: 'علم التشريح', nameEn: 'Anatomy', icon: '🫁', themeKey: 'rose', color: COLOR_THEMES.rose.color, badgeBg: COLOR_THEMES.rose.badgeBg, desc: '' },
+      { id: 'physiology', nameAr: 'علم وظائف الأعضاء', nameEn: 'Physiology', icon: '⚡', themeKey: 'amber', color: COLOR_THEMES.amber.color, badgeBg: COLOR_THEMES.amber.badgeBg, desc: '' },
+      { id: 'histology', nameAr: 'علم الأنسجة', nameEn: 'Histology', icon: '🔬', themeKey: 'purple', color: COLOR_THEMES.purple.color, badgeBg: COLOR_THEMES.purple.badgeBg, desc: '' },
+      { id: 'pharmacology', nameAr: 'علم الأدوية', nameEn: 'Pharmacology', icon: '💊', themeKey: 'emerald', color: COLOR_THEMES.emerald.color, badgeBg: COLOR_THEMES.emerald.badgeBg, desc: '' },
+      { id: 'pathology', nameAr: 'علم الأمراض', nameEn: 'Pathology', icon: '🧬', themeKey: 'red', color: COLOR_THEMES.red.color, badgeBg: COLOR_THEMES.red.badgeBg, desc: '' },
+      { id: 'biochemistry', nameAr: 'الكيمياء الحيوية', nameEn: 'Biochemistry', icon: '🧪', themeKey: 'sky', color: COLOR_THEMES.sky.color, badgeBg: COLOR_THEMES.sky.badgeBg, desc: '' },
+      { id: 'microbiology', nameAr: 'الأحياء الدقيقة', nameEn: 'Microbiology', icon: '🦠', themeKey: 'teal', color: COLOR_THEMES.teal.color, badgeBg: COLOR_THEMES.teal.badgeBg, desc: '' }
+    ];
+
+    let state = {
+      activeTab: 'dashboard',
+      selectedSubject: 'all',
+      selectedLectureId: 'all',
+      hubLectureId: null,
+      editingSubjectId: null,
+      editingLectureId: null,
+      editingCardId: null,
+      editingQuizIndex: null,
+      fcMode: 'anki',
+      srsQueueFilter: 'smart',
+      fcIndex: 0,
+      fcFlipped: false,
+      quizIndex: 0,
+      quizAnswered: {},
+      subjects: [],
+      lectures: [],
+      notesByLecture: {},
+      pomoSeconds: 25 * 60,
+      pomoRunning: false,
+      pomoInterval: null
+    };
+
+    function loadState() {
+      try {
+        localStorage.removeItem('medpulse_lectures_v1');
+        const savedSubjects = localStorage.getItem('medpulse_subjects_v3');
+        const savedLectures = localStorage.getItem('medpulse_lectures_v2');
+        const savedNotes = localStorage.getItem('medpulse_notes_v2');
+
+        state.subjects = savedSubjects ? JSON.parse(savedSubjects) : JSON.parse(JSON.stringify(INITIAL_SUBJECTS));
+        state.lectures = savedLectures ? JSON.parse(savedLectures) : [];
+        state.notesByLecture = savedNotes ? JSON.parse(savedNotes) : {};
+
+        state.lectures.forEach(lec => {
+          (lec.flashcards || []).forEach(ensureCardSRSFields);
+        });
+      } catch (e) {
+        state.subjects = JSON.parse(JSON.stringify(INITIAL_SUBJECTS));
+        state.lectures = [];
+        state.notesByLecture = {};
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem('medpulse_subjects_v3', JSON.stringify(state.subjects));
+        localStorage.setItem('medpulse_lectures_v2', JSON.stringify(state.lectures));
+        localStorage.setItem('medpulse_notes_v2', JSON.stringify(state.notesByLecture));
+      } catch (e) {}
+    }
+
+    function showToast(msg, icon = '✨') {
+      const banner = document.getElementById('toast-banner');
+      document.getElementById('toast-message').textContent = msg;
+      document.getElementById('toast-icon').textContent = icon;
+      banner.classList.remove('hidden');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 3000);
+    }
+
+    // ==================== DYNAMIC SRS ====================
+    function ensureCardSRSFields(card) {
+      if (typeof card.ease !== 'number') card.ease = 2.5;
+      if (typeof card.intervalMinutes !== 'number') card.intervalMinutes = 0;
+      if (typeof card.reps !== 'number') card.reps = 0;
+      if (typeof card.lapses !== 'number') card.lapses = 0;
+      if (typeof card.confidence !== 'number') card.confidence = card.status === 'mastered' ? 85 : 20;
+      if (typeof card.nextDue !== 'number') card.nextDue = 0;
+      return card;
+    }
+
+    function formatIntervalLabel(mins) {
+      if (mins < 60) return `${Math.max(1, Math.round(mins))} د`;
+      const hours = mins / 60;
+      if (hours < 24) return `${Math.round(hours)} س`;
+      const days = Math.round(hours / 24);
+      return `${days} ي`;
+    }
+
+    function computeNextSRSPreview(card) {
+      ensureCardSRSFields(card);
+      const ease = card.ease;
+      const reps = card.reps;
+      const curMins = card.intervalMinutes || 1440;
+
+      const againMins = 1;
+      const hardMins = reps === 0 ? 10 : Math.max(60, Math.round(curMins * 1.2));
+      const goodMins = reps === 0 ? 1440 : (reps === 1 ? 4320 : Math.round(curMins * ease));
+      const easyMins = reps === 0 ? 5760 : Math.round(curMins * ease * 1.35);
+
+      return { again: againMins, hard: hardMins, good: goodMins, easy: easyMins };
+    }
+
+    function applySRSRatingToCard(card, rating) {
+      ensureCardSRSFields(card);
+      const previews = computeNextSRSPreview(card);
+      const now = Date.now();
+
+      if (rating === 'again') {
+        card.reps = 0;
+        card.lapses += 1;
+        card.ease = Math.max(1.3, +(card.ease - 0.2).toFixed(2));
+        card.intervalMinutes = previews.again;
+        card.confidence = Math.max(10, card.confidence - 30);
+        card.status = 'due';
+      } else if (rating === 'hard') {
+        card.ease = Math.max(1.3, +(card.ease - 0.15).toFixed(2));
+        card.intervalMinutes = previews.hard;
+        card.confidence = Math.min(100, Math.max(25, card.confidence + 8));
+        card.status = card.confidence >= 75 ? 'mastered' : 'due';
+      } else if (rating === 'good') {
+        card.reps += 1;
+        card.intervalMinutes = previews.good;
+        card.confidence = Math.min(100, card.confidence + 22);
+        card.status = card.confidence >= 65 ? 'mastered' : 'due';
+      } else if (rating === 'easy') {
+        card.reps += 1;
+        card.ease = Math.min(3.2, +(card.ease + 0.15).toFixed(2));
+        card.intervalMinutes = previews.easy;
+        card.confidence = Math.min(100, card.confidence + 35);
+        card.status = 'mastered';
+      }
+
+      card.nextDue = now + card.intervalMinutes * 60 * 1000;
+      card.lastReviewed = now;
+    }
+
+    function getSubjectMeta(subId) {
+      return state.subjects.find(s => s.id === subId) || state.subjects[0] || INITIAL_SUBJECTS[0];
+    }
+
+    function getFilteredLectures() {
+      const q = (document.getElementById('lecture-search-input')?.value || '').trim().toLowerCase();
+      return state.lectures.filter(lec => {
+        const matchSub = state.selectedSubject === 'all' || lec.subject === state.selectedSubject;
+        const matchQuery = !q || lec.title.toLowerCase().includes(q) || lec.summary.some(s => s.toLowerCase().includes(q));
+        return matchSub && matchQuery;
+      });
+    }
+
+    function getActiveFlashcards() {
+      let cards = [];
+      const now = Date.now();
+      state.lectures.forEach(lec => {
+        if (state.selectedLectureId !== 'all' && lec.id !== state.selectedLectureId) return;
+        if (state.selectedLectureId === 'all' && state.selectedSubject !== 'all' && lec.subject !== state.selectedSubject) return;
+        lec.flashcards.forEach(fc => {
+          ensureCardSRSFields(fc);
+          cards.push({ ...fc, lectureTitle: lec.title, subject: lec.subject, lectureId: lec.id });
+        });
+      });
+
+      if (state.srsQueueFilter === 'due') {
+        cards = cards.filter(c => c.nextDue <= now || c.status === 'due');
+      } else if (state.srsQueueFilter === 'weak') {
+        cards = cards.filter(c => c.lapses >= 1 || c.ease < 2.1 || c.confidence < 50);
+      } else if (state.srsQueueFilter === 'smart') {
+        cards.sort((a, b) => {
+          const aDue = a.nextDue <= now ? 0 : 1;
+          const bDue = b.nextDue <= now ? 0 : 1;
+          if (aDue !== bDue) return aDue - bDue;
+          if (b.lapses !== a.lapses) return b.lapses - a.lapses;
+          return a.confidence - b.confidence;
+        });
+      }
+      return cards;
+    }
+
+    function getActiveQuizzes() {
+      let quizzes = [];
+      state.lectures.forEach(lec => {
+        if (state.selectedLectureId !== 'all' && lec.id !== state.selectedLectureId) return;
+        if (state.selectedLectureId === 'all' && state.selectedSubject !== 'all' && lec.subject !== state.selectedSubject) return;
+        lec.quizzes.forEach((qz, idx) => {
+          quizzes.push({ ...qz, id: `${lec.id}-q-${idx}`, rawIdx: idx, lectureId: lec.id, lectureTitle: lec.title, subject: lec.subject });
+        });
+      });
+      return quizzes;
+    }
+
+    // ==================== RENDER ====================
+    function renderAll() {
+      renderSubjectPills();
+      renderSubjectSelectDropdowns();
+      renderDashboard();
+      renderLectureDropdowns();
+      renderFlashcardsView();
+      renderQuizView();
+      renderSummaryView();
+    }
+
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+      ['dashboard', 'upload', 'flashcards', 'quiz', 'summary'].forEach(t => {
+        const sec = document.getElementById(`view-${t}`);
+        const btn = document.getElementById(`nav-${t}`);
+        if (t === tabName) {
+          sec.classList.remove('hidden');
+          btn.className = 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-600 text-white shadow-sm';
+        } else {
+          sec.classList.add('hidden');
+          btn.className = 'nav-tab-btn px-3.5 py-1.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+        }
+      });
+      if (tabName === 'upload' && state.selectedSubject !== 'all') {
+        document.getElementById('upload-subject-select').value = state.selectedSubject;
+      }
+      if (tabName === 'summary') {
+        setTimeout(resizeSketchCanvas, 60);
+      }
+      renderAll();
+    }
+
+    function openDepartment(subId) {
+      state.selectedSubject = subId;
+      state.selectedLectureId = 'all';
+      state.hubLectureId = null;
+      state.activeTab = 'dashboard';
+      switchTab('dashboard');
+    }
+
+    function openLectureHub(lecId) {
+      const lec = state.lectures.find(l => l.id === lecId);
+      if (!lec) return;
+      state.selectedSubject = lec.subject;
+      state.selectedLectureId = lec.id;
+      state.hubLectureId = lec.id;
+      state.activeTab = 'dashboard';
+      switchTab('dashboard');
+    }
+
+    function renderSubjectSelectDropdowns() {
+      const html = state.subjects.map(s => `<option value="${s.id}">${s.icon} ${s.nameEn} — ${s.nameAr}</option>`).join('');
+      const upSel = document.getElementById('upload-subject-select');
+      const edSel = document.getElementById('edit-lec-subject');
+      if (upSel) {
+        const cur = upSel.value;
+        upSel.innerHTML = html;
+        if (state.subjects.some(s => s.id === cur)) upSel.value = cur;
+      }
+      if (edSel) {
+        const cur = edSel.value;
+        edSel.innerHTML = html;
+        if (state.subjects.some(s => s.id === cur)) edSel.value = cur;
+      }
+    }
+
+    function renderSubjectPills() {
+      const container = document.getElementById('subject-pills-container');
+      const allActive = state.selectedSubject === 'all';
+      let html = `
+        <button data-sub="all" class="sub-pill-btn shrink-0 px-3 py-1 rounded-lg text-xs font-bold transition ${allActive ? 'bg-emerald-600 text-white' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
+          الكل
+        </button>
+      `;
+      state.subjects.forEach(s => {
+        const isAct = state.selectedSubject === s.id;
+        const count = state.lectures.filter(l => l.subject === s.id).length;
+        html += `
+          <button data-sub="${s.id}" class="sub-pill-btn shrink-0 px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${isAct ? 'bg-emerald-600 text-white' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}">
+            <span>${s.icon}</span>
+            <span class="font-en">${s.nameEn}</span>
+            ${count > 0 ? `<span class="text-[10px] opacity-75 font-en">${count}</span>` : ''}
+          </button>
+        `;
+      });
+      container.innerHTML = html;
+
+      container.querySelectorAll('.sub-pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => openDepartment(btn.getAttribute('data-sub')));
+      });
+    }
+
+    function renderDashboard() {
+      let totalCards = 0, dueCards = 0, totalConfidence = 0, totalQuizzes = 0;
+      const now = Date.now();
+      state.lectures.forEach(lec => {
+        totalQuizzes += lec.quizzes.length;
+        lec.flashcards.forEach(fc => {
+          ensureCardSRSFields(fc);
+          totalCards++;
+          totalConfidence += fc.confidence;
+          if (fc.nextDue <= now || fc.status === 'due') dueCards++;
+        });
+      });
+      const avgMemoryPct = totalCards > 0 ? Math.round(totalConfidence / totalCards) : 0;
+
+      document.getElementById('stat-total-cards').textContent = totalCards;
+      document.getElementById('stat-due-cards').textContent = dueCards;
+      document.getElementById('stat-total-quiz').textContent = totalQuizzes;
+      document.getElementById('stat-mastery-rate').textContent = `${avgMemoryPct}%`;
+
+      const allDeptsBox = document.getElementById('subview-all-departments');
+      const deptLecturesBox = document.getElementById('subview-department-lectures');
+      const lectureHubBox = document.getElementById('subview-lecture-hub');
+      const backToDeptsBtn = document.getElementById('back-to-departments-btn');
+
+      if (state.hubLectureId) {
+        const hubLec = state.lectures.find(l => l.id === state.hubLectureId);
+        if (hubLec) {
+          allDeptsBox.classList.add('hidden');
+          deptLecturesBox.classList.add('hidden');
+          lectureHubBox.classList.remove('hidden');
+
+          const sm = getSubjectMeta(hubLec.subject);
+          document.getElementById('hub-lecture-dept-badge').textContent = sm.nameEn;
+          document.getElementById('hub-lecture-date').textContent = hubLec.date;
+          document.getElementById('hub-lecture-title').textContent = hubLec.title;
+          document.getElementById('hub-fc-count').textContent = `${hubLec.flashcards.length}`;
+          document.getElementById('hub-quiz-count').textContent = `${hubLec.quizzes.length}`;
+          document.getElementById('hub-sum-count').textContent = `${hubLec.summary.length}`;
+          return;
+        } else {
+          state.hubLectureId = null;
+        }
+      }
+
+      lectureHubBox.classList.add('hidden');
+      deptLecturesBox.classList.remove('hidden');
+
+      if (state.selectedSubject === 'all') {
+        allDeptsBox.classList.remove('hidden');
+        backToDeptsBtn.classList.add('hidden');
+        document.getElementById('dept-header-title').textContent = 'المحاضرات';
+        document.getElementById('active-subject-badge').textContent = `${state.lectures.length}`;
+      } else {
+        allDeptsBox.classList.add('hidden');
+        backToDeptsBtn.classList.remove('hidden');
+        const sm = getSubjectMeta(state.selectedSubject);
+        document.getElementById('dept-header-title').textContent = `${sm.nameEn} — ${sm.nameAr}`;
+        document.getElementById('active-subject-badge').textContent = `${state.lectures.filter(l => l.subject === sm.id).length}`;
+      }
+
+      // Render Minimalist Department Cards
+      const deptGrid = document.getElementById('departments-grid');
+      deptGrid.innerHTML = state.subjects.map(sub => {
+        const subLecs = state.lectures.filter(l => l.subject === sub.id);
+        const subCards = subLecs.reduce((acc, l) => acc + l.flashcards.length, 0);
+
+        return `
+          <div class="pro-card group bg-white dark:bg-[#111622] rounded-2xl border border-slate-200/70 dark:border-white/[0.06] p-4 hover:border-emerald-500/60 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-2">
+              <div data-open-dept="${sub.id}" class="flex items-center gap-3 cursor-pointer flex-1">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${sub.color} flex items-center justify-center text-lg text-white shrink-0">
+                  ${sub.icon}
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold font-en text-slate-900 dark:text-white">${sub.nameEn}</h4>
+                  <p class="text-xs text-slate-400">${sub.nameAr}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-0.5 opacity-60 group-hover:opacity-100 transition">
+                <button data-dup-dept="${sub.id}" title="تكرار" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.07] text-xs">⧉</button>
+                <button data-edit-dept="${sub.id}" title="تعديل" class="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.07] text-xs">✎</button>
+                <button data-del-dept="${sub.id}" title="حذف" class="p-1.5 rounded-lg hover:bg-rose-500/10 hover:text-rose-500 text-xs">✕</button>
+              </div>
+            </div>
+
+            <div data-open-dept="${sub.id}" class="cursor-pointer pt-2.5 border-t border-slate-100 dark:border-white/[0.05] flex items-center justify-between text-[11px] text-slate-400 font-en">
+              <span>${subLecs.length} Lectures</span>
+              <span>${subCards} Cards</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      deptGrid.querySelectorAll('[data-open-dept]').forEach(el => {
+        el.addEventListener('click', () => openDepartment(el.getAttribute('data-open-dept')));
+      });
+      deptGrid.querySelectorAll('[data-dup-dept]').forEach(btn => {
+        btn.addEventListener('click', (e) => { e.stopPropagation(); duplicateDepartment(btn.getAttribute('data-dup-dept')); });
+      });
+      deptGrid.querySelectorAll('[data-edit-dept]').forEach(btn => {
+        btn.addEventListener('click', (e) => { e.stopPropagation(); openDeptModalForEdit(btn.getAttribute('data-edit-dept')); });
+      });
+      deptGrid.querySelectorAll('[data-del-dept]').forEach(btn => {
+        btn.addEventListener('click', (e) => { e.stopPropagation(); deleteDepartment(btn.getAttribute('data-del-dept')); });
+      });
+
+      // Render Lectures List
+      const listContainer = document.getElementById('lectures-list-container');
+      const filtered = getFilteredLectures();
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div class="col-span-full text-center py-10 rounded-2xl border border-dashed border-slate-200 dark:border-white/[0.06] space-y-3">
+            <p class="text-xs font-bold text-slate-400">لا توجد محاضرات</p>
+            <div class="flex items-center justify-center gap-2">
+              <button id="empty-state-upload-btn" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">+ رفع محاضرة</button>
+              <button id="empty-state-sync-btn" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-white/[0.05] text-xs font-bold">مزامنة</button>
+            </div>
+          </div>
+        `;
+        document.getElementById('empty-state-upload-btn')?.addEventListener('click', () => switchTab('upload'));
+        document.getElementById('empty-state-sync-btn')?.addEventListener('click', () => {
+          document.getElementById('sync-modal').classList.remove('hidden');
+        });
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(lec => {
+        const sm = getSubjectMeta(lec.subject);
+        return `
+          <div class="pro-card p-4 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] border border-slate-200/70 dark:border-white/[0.06] flex flex-col justify-between gap-3.5 hover:border-emerald-500/50">
+            <div class="flex items-start justify-between gap-2">
+              <div data-select-lec="${lec.id}" class="cursor-pointer flex-1">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${sm.badgeBg} font-en">${sm.nameEn}</span>
+                <h4 class="text-sm md:text-base font-bold mt-2 ltr-text">${lec.title}</h4>
+              </div>
+              <div class="flex items-center gap-1">
+                <button data-edit-lec="${lec.id}" class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-white/[0.07] text-xs text-slate-400">✎</button>
+                <button data-del-lec="${lec.id}" class="p-1.5 rounded-lg hover:bg-rose-500/10 text-xs text-rose-500">✕</button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2.5 border-t border-slate-200/60 dark:border-white/[0.05]">
+              <span class="text-[11px] text-slate-400 font-en">${lec.flashcards.length} Cards · ${lec.quizzes.length} Qs</span>
+              <div class="flex items-center gap-1.5">
+                <button data-open-fc="${lec.id}" class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-500 text-xs font-bold">البطاقات</button>
+                <button data-open-qz="${lec.id}" class="px-3 py-1 rounded-lg bg-sky-500/10 text-sky-500 text-xs font-bold">الاختبار</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      listContainer.querySelectorAll('[data-select-lec]').forEach(el => {
+        el.addEventListener('click', () => openLectureHub(el.getAttribute('data-select-lec')));
+      });
+      listContainer.querySelectorAll('[data-open-fc]').forEach(b => {
+        b.addEventListener('click', () => {
+          state.selectedLectureId = b.getAttribute('data-open-fc');
+          state.fcIndex = 0;
+          switchTab('flashcards');
+        });
+      });
+      listContainer.querySelectorAll('[data-open-qz]').forEach(b => {
+        b.addEventListener('click', () => {
+          state.selectedLectureId = b.getAttribute('data-open-qz');
+          state.quizIndex = 0;
+          switchTab('quiz');
+        });
+      });
+      listContainer.querySelectorAll('[data-edit-lec]').forEach(b => {
+        b.addEventListener('click', () => openEditLectureModal(b.getAttribute('data-edit-lec')));
+      });
+      listContainer.querySelectorAll('[data-del-lec]').forEach(b => {
+        b.addEventListener('click', () => deleteLectureById(b.getAttribute('data-del-lec')));
+      });
+    }
+
+    function renderLectureDropdowns() {
+      const fcSelect = document.getElementById('fc-lecture-select');
+      const qzSelect = document.getElementById('quiz-lecture-select');
+      const sumSelect = document.getElementById('summary-lecture-select');
+
+      const optionsHtml = `
+        <option value="all">الكل (${state.lectures.length})</option>
+        ${state.lectures.map(l => `<option value="${l.id}" ${state.selectedLectureId === l.id ? 'selected' : ''}>${l.title}</option>`).join('')}
+      `;
+
+      fcSelect.innerHTML = optionsHtml;
+      qzSelect.innerHTML = optionsHtml;
+      sumSelect.innerHTML = state.lectures.length
+        ? state.lectures.map(l => `<option value="${l.id}" ${state.selectedLectureId === l.id ? 'selected' : ''}>${l.title}</option>`).join('')
+        : '<option value="all">—</option>';
+    }
+
+    // ==================== DEPARTMENT CRUD ====================
+    function openDeptModalForNew() {
+      state.editingSubjectId = null;
+      document.getElementById('dept-modal-title').textContent = 'إضافة قسم';
+      document.getElementById('dept-name-en').value = '';
+      document.getElementById('dept-name-ar').value = '';
+      document.getElementById('dept-icon-input').value = '🩺';
+      document.getElementById('dept-color-select').value = 'emerald';
+      document.getElementById('dept-desc-input').value = '';
+      document.getElementById('dept-modal').classList.remove('hidden');
+    }
+
+    function openDeptModalForEdit(subId) {
+      const sub = state.subjects.find(s => s.id === subId);
+      if (!sub) return;
+      state.editingSubjectId = sub.id;
+      document.getElementById('dept-modal-title').textContent = 'تعديل القسم';
+      document.getElementById('dept-name-en').value = sub.nameEn;
+      document.getElementById('dept-name-ar').value = sub.nameAr;
+      document.getElementById('dept-icon-input').value = sub.icon || '🩺';
+      document.getElementById('dept-color-select').value = sub.themeKey || 'emerald';
+      document.getElementById('dept-desc-input').value = sub.desc || '';
+      document.getElementById('dept-modal').classList.remove('hidden');
+    }
+
+    function duplicateDepartment(subId) {
+      const orig = state.subjects.find(s => s.id === subId);
+      if (!orig) return;
+      const newId = `${orig.id}-copy-${Date.now()}`;
+      state.subjects.push({
+        ...orig,
+        id: newId,
+        nameEn: `${orig.nameEn} 2`,
+        nameAr: `${orig.nameAr} 2`
+      });
+
+      state.lectures.filter(l => l.subject === subId).forEach((lec, idx) => {
+        const cloned = JSON.parse(JSON.stringify(lec));
+        cloned.id = `lec-dup-${Date.now()}-${idx}`;
+        cloned.subject = newId;
+        state.lectures.push(cloned);
+      });
+
+      saveState();
+      renderAll();
+      showToast(`تم تكرار ${orig.nameEn}`);
+    }
+
+    function deleteDepartment(subId) {
+      if (state.subjects.length <= 1) return;
+      state.subjects = state.subjects.filter(s => s.id !== subId);
+      state.lectures = state.lectures.filter(l => l.subject !== subId);
+      if (state.selectedSubject === subId) state.selectedSubject = 'all';
+      saveState();
+      renderAll();
+      showToast('تم الحذف', '🗑️');
+    }
+
+    function deleteLectureById(lecId) {
+      state.lectures = state.lectures.filter(l => l.id !== lecId);
+      if (state.selectedLectureId === lecId) state.selectedLectureId = 'all';
+      if (state.hubLectureId === lecId) state.hubLectureId = null;
+      saveState();
+      renderAll();
+      showToast('تم حذف المحاضرة', '🗑️');
+    }
+
+    function openEditLectureModal(lecId) {
+      const lec = state.lectures.find(l => l.id === lecId);
+      if (!lec) return;
+      state.editingLectureId = lec.id;
+      renderSubjectSelectDropdowns();
+      document.getElementById('edit-lec-title').value = lec.title;
+      document.getElementById('edit-lec-subject').value = lec.subject;
+      document.getElementById('edit-lec-summary-text').value = lec.summary.join('\n\n');
+      document.getElementById('edit-lec-regenerate-chk').checked = false;
+      document.getElementById('edit-lecture-modal').classList.remove('hidden');
+    }
+
+    // ==================== FLASHCARDS ====================
+    function renderFlashcardsView() {
+      const cards = getActiveFlashcards();
+      const interBox = document.getElementById('fc-interactive-container');
+      const clozeBox = document.getElementById('fc-cloze-container');
+      const listBox = document.getElementById('fc-list-container');
+
+      ['anki', 'cloze', 'list'].forEach(m => {
+        const btn = document.getElementById(`fc-mode-${m}`);
+        btn.className = state.fcMode === m
+          ? 'px-3 py-1 rounded-lg bg-emerald-600 text-white transition'
+          : 'px-3 py-1 rounded-lg text-slate-500 transition';
+      });
+
+      document.querySelectorAll('.srs-queue-filter-btn').forEach(btn => {
+        const f = btn.getAttribute('data-srs-filter');
+        btn.className = state.srsQueueFilter === f
+          ? 'srs-queue-filter-btn px-2.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold transition'
+          : 'srs-queue-filter-btn px-2.5 py-1.5 rounded-xl bg-[#F6F5F2] dark:bg-white/[0.05] text-slate-500 text-xs font-bold transition';
+      });
+
+      interBox.classList.toggle('hidden', state.fcMode !== 'anki');
+      clozeBox.classList.toggle('hidden', state.fcMode !== 'cloze');
+      listBox.classList.toggle('hidden', state.fcMode !== 'list');
+
+      if (cards.length === 0) {
+        document.getElementById('fc-progress-text').textContent = '0 / 0';
+        document.getElementById('fc-progress-bar').style.width = '0%';
+        document.getElementById('fc-front-text').textContent = 'لا توجد بطاقات';
+        document.getElementById('fc-front-hint').textContent = '';
+        document.getElementById('fc-back-text').textContent = '';
+        document.getElementById('fc-back-extra').textContent = '';
+        document.getElementById('fc-cloze-list').innerHTML = '';
+        listBox.innerHTML = '';
+        return;
+      }
+
+      if (state.fcIndex >= cards.length) state.fcIndex = 0;
+      if (state.fcIndex < 0) state.fcIndex = cards.length - 1;
+
+      const card = cards[state.fcIndex];
+      const sm = getSubjectMeta(card.subject);
+
+      document.getElementById('fc-card-inner').classList.toggle('is-flipped', state.fcFlipped);
+      document.getElementById('fc-card-subject-tag').textContent = sm.nameEn;
+      document.getElementById('fc-progress-text').textContent = `${state.fcIndex + 1} / ${cards.length}`;
+      document.getElementById('fc-progress-bar').style.width = `${Math.round(((state.fcIndex + 1) / cards.length) * 100)}%`;
+
+      const easePct = Math.round((card.ease || 2.5) * 100);
+      document.getElementById('fc-telemetry-badge').textContent = `Ease ${easePct}% · ${card.confidence || 0}%`;
+
+      const statusBadge = document.getElementById('fc-srs-badge');
+      if (card.lapses >= 2) {
+        statusBadge.textContent = 'متعثرة';
+        statusBadge.className = 'px-2.5 py-0.5 rounded-md bg-rose-500/15 text-rose-500';
+      } else if (card.status === 'mastered') {
+        statusBadge.textContent = 'متقنة';
+        statusBadge.className = 'px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-500';
+      } else {
+        statusBadge.textContent = 'مراجعة';
+        statusBadge.className = 'px-2.5 py-0.5 rounded-md bg-amber-500/15 text-amber-500';
+      }
+
+      const previews = computeNextSRSPreview(card);
+      document.getElementById('srs-sub-again').textContent = formatIntervalLabel(previews.again);
+      document.getElementById('srs-sub-hard').textContent = formatIntervalLabel(previews.hard);
+      document.getElementById('srs-sub-good').textContent = formatIntervalLabel(previews.good);
+      document.getElementById('srs-sub-easy').textContent = formatIntervalLabel(previews.easy);
+
+      document.getElementById('fc-front-text').textContent = card.front;
+      document.getElementById('fc-front-hint').textContent = card.hint || '';
+      document.getElementById('fc-back-text').textContent = card.back;
+      document.getElementById('fc-back-extra').textContent = card.hint || card.lectureTitle;
+      document.getElementById('fc-lecture-footer').textContent = card.lectureTitle;
+
+      const clozeList = document.getElementById('fc-cloze-list');
+      clozeList.innerHTML = cards.map((c, idx) => {
+        let answerHtml = c.back;
+        const targetWord = c.clozeWord || c.back.split(' ').slice(0, 2).join(' ');
+        if (targetWord && answerHtml.includes(targetWord)) {
+          answerHtml = answerHtml.replace(targetWord, `<span class="cloze-hidden" data-cloze-item="${idx}">${targetWord}</span>`);
+        } else {
+          answerHtml = `${answerHtml} — <span class="cloze-hidden" data-cloze-item="${idx}">${targetWord}</span>`;
+        }
+        return `
+          <div class="bg-white dark:bg-[#111622] p-4 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] space-y-1.5">
+            <p class="text-sm font-bold ltr-text">${c.front}</p>
+            <p class="text-sm text-slate-500 dark:text-slate-300 ltr-text">${answerHtml}</p>
+          </div>
+        `;
+      }).join('');
+
+      clozeList.querySelectorAll('.cloze-hidden').forEach(el => {
+        el.addEventListener('click', () => el.classList.toggle('revealed'));
+      });
+
+      listBox.innerHTML = cards.map((c, idx) => `
+        <div class="bg-white dark:bg-[#111622] p-4 rounded-2xl border border-slate-200/70 dark:border-white/[0.06] grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+          <div class="md:col-span-5">
+            <p class="text-sm font-bold ltr-text">${c.front}</p>
+          </div>
+          <div class="md:col-span-5">
+            <p class="text-sm text-slate-500 dark:text-slate-300 ltr-text">${c.back}</p>
+          </div>
+          <div class="md:col-span-2 flex items-center justify-end gap-1.5">
+            <button data-list-edit-fc="${c.id}" data-list-lec="${c.lectureId}" class="p-1.5 rounded-lg bg-slate-100 dark:bg-white/[0.05] text-xs">✎</button>
+            <button data-list-del-fc="${c.id}" data-list-lec="${c.lectureId}" class="p-1.5 rounded-lg bg-rose-500/10 text-rose-500 text-xs">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      listBox.querySelectorAll('[data-list-edit-fc]').forEach(btn => {
+        btn.addEventListener('click', () => openFlashcardModalForEdit(btn.getAttribute('data-list-lec'), btn.getAttribute('data-list-edit-fc')));
+      });
+      listBox.querySelectorAll('[data-list-del-fc]').forEach(btn => {
+        btn.addEventListener('click', () => deleteFlashcard(btn.getAttribute('data-list-lec'), btn.getAttribute('data-list-del-fc')));
+      });
+    }
+
+    function openFlashcardModalForEdit(lecId, cardId) {
+      const lec = state.lectures.find(l => l.id === lecId);
+      const card = lec?.flashcards.find(f => f.id === cardId);
+      if (!card) return;
+      state.editingLectureId = lecId;
+      state.editingCardId = cardId;
+      document.getElementById('fc-modal-title').textContent = 'تعديل البطاقة';
+      document.getElementById('new-fc-front').value = card.front;
+      document.getElementById('new-fc-back').value = card.back;
+      document.getElementById('new-fc-hint').value = card.hint || '';
+      document.getElementById('fc-add-modal').classList.remove('hidden');
+    }
+
+    function deleteFlashcard(lecId, cardId) {
+      const lec = state.lectures.find(l => l.id === lecId);
+      if (!lec) return;
+      lec.flashcards = lec.flashcards.filter(f => f.id !== cardId);
+      saveState();
+      renderAll();
+      showToast('تم الحذف', '🗑️');
+    }
+
+    // ==================== QUIZ ====================
+    function renderQuizView() {
+      const quizzes = getActiveQuizzes();
+      if (quizzes.length === 0) {
+        document.getElementById('quiz-q-counter').textContent = '0 / 0';
+        document.getElementById('quiz-live-score').textContent = '0 / 0';
+        document.getElementById('quiz-q-text').textContent = 'لا توجد أسئلة';
+        document.getElementById('quiz-q-ar-hint').textContent = '';
+        document.getElementById('quiz-options-container').innerHTML = '';
+        document.getElementById('quiz-explanation-box').classList.add('hidden');
+        return;
+      }
+
+      if (state.quizIndex >= quizzes.length) state.quizIndex = 0;
+      if (state.quizIndex < 0) state.quizIndex = quizzes.length - 1;
+
+      const currentQ = quizzes[state.quizIndex];
+      const sm = getSubjectMeta(currentQ.subject);
+
+      let correctCount = 0;
+      quizzes.forEach(q => {
+        if (state.quizAnswered[q.id] === q.answer) correctCount++;
+      });
+      document.getElementById('quiz-live-score').textContent = `${correctCount} / ${quizzes.length}`;
+
+      document.getElementById('quiz-subject-badge').textContent = sm.nameEn;
+      document.getElementById('quiz-q-counter').textContent = `${state.quizIndex + 1} / ${quizzes.length}`;
+      document.getElementById('quiz-q-text').textContent = currentQ.q;
+      document.getElementById('quiz-q-ar-hint').textContent = currentQ.hintAr || '';
+
+      const userChoice = state.quizAnswered[currentQ.id];
+      const hasAnswered = userChoice !== undefined;
+
+      const optsContainer = document.getElementById('quiz-options-container');
+      const letters = ['A', 'B', 'C', 'D'];
+      optsContainer.innerHTML = currentQ.options.map((opt, idx) => {
+        let btnStyle = 'bg-[#F6F5F2] dark:bg-[#0A0D14] border-slate-200/80 dark:border-white/[0.07] hover:border-emerald-500';
+        let badgeStyle = 'bg-slate-200 dark:bg-white/[0.08] text-slate-700 dark:text-slate-200';
+
+        if (hasAnswered) {
+          if (idx === currentQ.answer) {
+            btnStyle = 'bg-emerald-500/15 border-emerald-500 text-emerald-600 dark:text-emerald-300 font-bold';
+            badgeStyle = 'bg-emerald-500 text-white';
+          } else if (idx === userChoice && idx !== currentQ.answer) {
+            btnStyle = 'bg-rose-500/15 border-rose-500 text-rose-500';
+            badgeStyle = 'bg-rose-500 text-white';
+          }
+        }
+
+        return `
+          <button data-opt-idx="${idx}" class="quiz-opt-btn w-full p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 ltr-text ${btnStyle}">
+            <div class="flex items-center gap-3">
+              <span class="w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 ${badgeStyle}">${letters[idx] || idx + 1}</span>
+              <span class="text-xs md:text-sm font-semibold">${opt}</span>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      optsContainer.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.quizAnswered[currentQ.id] = parseInt(btn.getAttribute('data-opt-idx'), 10);
+          renderQuizView();
+        });
+      });
+
+      const expBox = document.getElementById('quiz-explanation-box');
+      if (hasAnswered) {
+        expBox.classList.remove('hidden');
+        document.getElementById('quiz-feedback-title').textContent = userChoice === currentQ.answer ? '✓ إجابة صحيحة' : `✕ الإجابة الصحيحة: ${letters[currentQ.answer]}`;
+        document.getElementById('quiz-explanation-text').textContent = currentQ.explanation;
+      } else {
+        expBox.classList.add('hidden');
+      }
+    }
+
+    // ==================== SUMMARY ====================
+    function renderSummaryView() {
+      const targetId = state.selectedLectureId === 'all' ? (state.lectures[0]?.id || '') : state.selectedLectureId;
+      const lec = state.lectures.find(l => l.id === targetId) || state.lectures[0];
+      const box = document.getElementById('summary-content-box');
+      if (!lec) {
+        box.innerHTML = `<div class="py-8 text-center text-slate-400 text-xs">لا توجد محاضرة</div>`;
+        return;
+      }
+
+      const sumSelect = document.getElementById('summary-lecture-select');
+      if (sumSelect) sumSelect.value = lec.id;
+
+      const sm = getSubjectMeta(lec.subject);
+      box.innerHTML = `
+        <div class="p-3.5 rounded-2xl bg-[#F6F5F2] dark:bg-[#0A0D14] flex items-center justify-between border border-slate-200/70 dark:border-white/[0.06]">
+          <span class="font-bold text-sm ltr-text">${lec.title}</span>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${sm.badgeBg} font-en">${sm.nameEn}</span>
+            <button id="summary-edit-lec-btn" class="text-xs font-bold text-slate-400 hover:text-white">✎</button>
+          </div>
+        </div>
+        <ul class="space-y-2 pt-1">
+          ${lec.summary.map((point, i) => `
+            <li class="p-3.5 rounded-2xl bg-[#F6F5F2]/50 dark:bg-[#0A0D14]/50 border border-slate-200/60 dark:border-white/[0.05] flex items-start gap-3 ltr-text">
+              <span class="w-5 h-5 rounded-md bg-emerald-500/15 text-emerald-500 text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">${i + 1}</span>
+              <span class="text-xs md:text-sm leading-relaxed">${point}</span>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+
+      document.getElementById('summary-edit-lec-btn')?.addEventListener('click', () => openEditLectureModal(lec.id));
+
+      const notesArea = document.getElementById('personal-lecture-notes');
+      notesArea.value = state.notesByLecture[lec.id] || '';
+      notesArea.oninput = () => {
+        state.notesByLecture[lec.id] = notesArea.value;
+        saveState();
+      };
+    }
+
+    // ==================== UPLOAD & GENERATOR ====================
+    async function extractFileText(file, targetTextareaId = 'upload-lecture-text') {
+      const statusEl = document.getElementById('upload-file-status');
+      if (statusEl) {
+        statusEl.classList.remove('hidden');
+        statusEl.textContent = `جاري قراءة ${file.name}...`;
+      }
+
+      if (targetTextareaId === 'upload-lecture-text') {
+        const titleInput = document.getElementById('upload-lecture-title');
+        if (!titleInput.value.trim()) {
+          titleInput.value = file.name.replace(/\.[^/.]+$/, '');
+        }
+      }
+
+      if (file.name.toLowerCase().endsWith('.pdf') && window.pdfjsLib) {
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+          let fullText = '';
+          const maxPages = Math.min(pdf.numPages, 40);
+          for (let i = 1; i <= maxPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            fullText += content.items.map(item => item.str).join(' ') + '\n\n';
+          }
+          document.getElementById(targetTextareaId).value = fullText.trim();
+          updateCharCount();
+          if (statusEl) statusEl.textContent = `✓ تم استخراج ${maxPages} صفحات`;
+        } catch (err) {
+          if (statusEl) statusEl.textContent = 'تعذر قراءة الملف';
+        }
+      } else {
+        const text = await file.text();
+        document.getElementById(targetTextareaId).value = text;
+        updateCharCount();
+        if (statusEl) statusEl.textContent = `✓ ${file.name}`;
+      }
+    }
+
+    function updateCharCount() {
+      const len = (document.getElementById('upload-lecture-text')?.value || '').length;
+      const el = document.getElementById('char-counter');
+      if (el) el.textContent = `${len}`;
+    }
+
+    function generateLectureAssetsFromText(subject, title, rawText) {
+      const lines = rawText
+        .split(/\n+|(?<=[.؟!])\s+/)
+        .map(s => s.replace(/^[•\-*0-9.)\s]+/, '').trim())
+        .filter(s => s.length > 15 && s.length < 420);
+
+      const cleanLines = lines.length >= 1 ? lines.slice(0, 20) : [rawText.trim() || title];
+      const summary = cleanLines.slice(0, 8);
+      const flashcards = [];
+      const quizzes = [];
+
+      cleanLines.forEach((sentence, idx) => {
+        let front = '';
+        let back = sentence;
+        let clozeWord = '';
+
+        const colonSplit = sentence.split(/[:–—-]/);
+        if (colonSplit.length >= 2 && colonSplit[0].trim().length > 2 && colonSplit[0].trim().length < 95) {
+          const concept = colonSplit[0].trim();
+          const detail = colonSplit.slice(1).join(': ').trim();
+          front = `${concept}`;
+          back = `${detail}`;
+          clozeWord = concept;
+        } else {
+          const words = sentence.split(/\s+/);
+          clozeWord = words.find(w => w.length > 5 && /^[A-Z]/.test(w)) || words.slice(0, 2).join(' ');
+          front = `${title} — ${clozeWord}`;
+          back = sentence;
+        }
+
+        flashcards.push(ensureCardSRSFields({
+          id: `fc-gen-${Date.now()}-${idx}`,
+          front,
+          back,
+          hint: '',
+          status: 'due',
+          clozeWord
+        }));
+      });
+
+      const distractorsPool = [
+        'Inhibition of Na+/K+ ATPase pump on the basolateral membrane',
+        'Direct competitive antagonism of muscarinic M3 receptors',
+        'Type IV cell-mediated hypersensitivity reaction via CD4+ Th1 cells',
+        'Decreased pulmonary surfactant synthesis by Type II pneumocytes',
+        'Defective collagen fibril cross-linking in extracellular matrix'
+      ];
+
+      cleanLines.slice(0, 8).forEach((sentence, idx) => {
+        const wrong1 = cleanLines[(idx + 1) % cleanLines.length] !== sentence
+          ? cleanLines[(idx + 1) % cleanLines.length].slice(0, 110)
+          : distractorsPool[idx % distractorsPool.length];
+        const wrong2 = distractorsPool[(idx + 1) % distractorsPool.length];
+        const wrong3 = distractorsPool[(idx + 2) % distractorsPool.length];
+
+        const correctOpt = sentence.length > 125 ? sentence.slice(0, 122) + '...' : sentence;
+        const options = [correctOpt, wrong1, wrong2, wrong3];
+        const correctIdx = idx % 4;
+        const rotated = [...options];
+        const temp = rotated[0];
+        rotated[0] = rotated[correctIdx];
+        rotated[correctIdx] = temp;
+
+        quizzes.push({
+          q: `Which statement is correct regarding ${title} (#${idx + 1})?`,
+          hintAr: '',
+          options: rotated,
+          answer: correctIdx,
+          explanation: sentence
+        });
+      });
+
+      return {
+        id: `lec-custom-${Date.now()}`,
+        subject,
+        title,
+        date: new Date().toISOString().slice(0, 10),
+        summary,
+        flashcards,
+        quizzes
+      };
+    }
+
+    // ==================== SYNC (REAL CROSS-DEVICE CLOUD & EMAIL ENGINE) ====================
+    let currentSyncPin = 'MED-' + Math.floor(1000 + Math.random() * 9000);
+
+    function hashKey(str) {
+      let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+      for (let i = 0; i < str.length; i++) {
+        const ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+      return (h1 >>> 0).toString(36) + (h2 >>> 0).toString(36);
+    }
+
+    function buildSyncPayload() {
+      return {
+        version: 4,
+        exportedAt: new Date().toISOString(),
+        pin: currentSyncPin,
+        subjects: state.subjects,
+        lectures: state.lectures,
+        notesByLecture: state.notesByLecture
+      };
+    }
+
+    function applySyncPayload(payload, mergeMode = true) {
+      if (!payload || !Array.isArray(payload.lectures)) {
+        showToast('ملف أو بيانات المزامنة غير صالحة', '⚠️');
+        return false;
+      }
+
+      if (!mergeMode) {
+        if (Array.isArray(payload.subjects) && payload.subjects.length > 0) state.subjects = payload.subjects;
+        state.lectures = payload.lectures;
+        state.notesByLecture = payload.notesByLecture || {};
+      } else {
+        if (Array.isArray(payload.subjects)) {
+          payload.subjects.forEach(incSub => {
+            if (!state.subjects.some(s => s.id === incSub.id)) state.subjects.push(incSub);
+          });
+        }
+        payload.lectures.forEach(incLec => {
+          const idx = state.lectures.findIndex(l => l.id === incLec.id || (l.title === incLec.title && l.subject === incLec.subject));
+          if (idx === -1) state.lectures.unshift(incLec);
+          else state.lectures[idx] = incLec;
+        });
+        if (payload.notesByLecture) {
+          state.notesByLecture = { ...state.notesByLecture, ...payload.notesByLecture };
+        }
+      }
+
+      state.lectures.forEach(l => (l.flashcards || []).forEach(ensureCardSRSFields));
+      saveState();
+      renderAll();
+      const modal = document.getElementById('sync-modal');
+      if (modal) modal.classList.add('hidden');
+      showToast(`تمت استعادة ومزامنة ${state.lectures.length} محاضرات بنجاح!`, '✅');
+      return true;
+    }
+
+    // Real cross-device cloud save using ntfy.sh attachment & jsonblob fallback
+    async function cloudSave(key, payload) {
+      const cleanKey = key.trim().toLowerCase();
+      const topic = cleanKey.includes('@')
+        ? 'medpulse_sync_' + hashKey(cleanKey)
+        : 'medpulse_pin_' + cleanKey.replace(/[^a-z0-9]/g, '');
+
+      const jsonStr = JSON.stringify(payload);
+      let ok = false;
+
+      // 1. Send to ntfy.sh as attachment via PUT
+      try {
+        const res = await fetch(`https://ntfy.sh/${topic}`, {
+          method: 'PUT',
+          headers: {
+            'Filename': 'medpulse_backup.json',
+            'Title': 'MedPulse Sync Backup',
+            'Tags': 'medical,sync'
+          },
+          body: jsonStr
+        });
+        if (res.ok) ok = true;
+      } catch (err) {
+        console.warn('ntfy save failed:', err);
+      }
+
+      // 2. Fallback to jsonblob.com
+      try {
+        const jbRes = await fetch('https://jsonblob.com/api/jsonBlob', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: jsonStr
+        });
+        if (jbRes.ok) {
+          const loc = jbRes.headers.get('Location') || '';
+          const blobId = loc.split('/').pop();
+          if (blobId) {
+            ok = true;
+            try {
+              await fetch(`https://ntfy.sh/${topic}`, {
+                method: 'POST',
+                body: JSON.stringify({ blobId: blobId, time: Date.now() })
+              });
+            } catch(e) {}
+          }
+        }
+      } catch (err2) {
+        console.warn('jsonblob fallback failed:', err2);
+      }
+
+      return { success: ok, topic };
+    }
+
+    // Real cross-device cloud load from ntfy.sh cached attachment / jsonblob
+    async function cloudLoad(key) {
+      const cleanKey = key.trim().toLowerCase();
+      const topic = cleanKey.includes('@')
+        ? 'medpulse_sync_' + hashKey(cleanKey)
+        : 'medpulse_pin_' + cleanKey.replace(/[^a-z0-9]/g, '');
+
+      // 1. Fetch from ntfy.sh cached messages (poll=1 returns cached messages)
+      try {
+        const res = await fetch(`https://ntfy.sh/${topic}/json?poll=1`);
+        if (res.ok) {
+          const text = await res.text();
+          const lines = text.trim().split('\n').filter(Boolean);
+          for (let i = lines.length - 1; i >= 0; i--) {
+            try {
+              const item = JSON.parse(lines[i]);
+              if (item.attachment && item.attachment.url) {
+                const attRes = await fetch(item.attachment.url);
+                if (attRes.ok) {
+                  const attJson = await attRes.json();
+                  if (attJson && Array.isArray(attJson.lectures)) {
+                    return { success: true, payload: attJson };
+                  }
+                }
+              }
+              if (item.message) {
+                try {
+                  const msgData = JSON.parse(item.message);
+                  if (msgData.lectures && Array.isArray(msgData.lectures)) {
+                    return { success: true, payload: msgData };
+                  }
+                  if (msgData.blobId) {
+                    const bRes = await fetch(`https://jsonblob.com/api/jsonBlob/${msgData.blobId}`);
+                    if (bRes.ok) {
+                      const bJson = await bRes.json();
+                      if (bJson && Array.isArray(bJson.lectures)) {
+                        return { success: true, payload: bJson };
+                      }
+                    }
+                  }
+                } catch(e) {}
+              }
+            } catch(e) {}
+          }
+        }
+      } catch (err) {
+        console.warn('ntfy load failed:', err);
+      }
+
+      // 2. Direct jsonblob ID lookup
+      if (cleanKey.length >= 8 && !cleanKey.includes('@')) {
+        try {
+          const bRes = await fetch(`https://jsonblob.com/api/jsonBlob/${cleanKey}`);
+          if (bRes.ok) {
+            const bJson = await bRes.json();
+            if (bJson && Array.isArray(bJson.lectures)) {
+              return { success: true, payload: bJson };
+            }
+          }
+        } catch(err) {}
+      }
+
+      return { success: false };
+    }
+
+    // 1-Click Native Share / AirDrop / Email helper
+    async function shareViaEmailOrAirDrop() {
+      const email = (document.getElementById('sync-email-input')?.value || '').trim();
+      if (email) {
+        try { localStorage.setItem('medpulse_user_email', email); } catch(e) {}
+      }
+      const payload = buildSyncPayload();
+      const jsonStr = JSON.stringify(payload, null, 2);
+      const fileName = `MedPulse_Sync_${new Date().toISOString().slice(0, 10)}.json`;
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const file = new File([blob], fileName, { type: 'application/json' });
+
+      // If browser supports Web Share with files (iOS Safari, Mac Safari, modern Chrome)
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            title: 'MedPulse Backup',
+            text: 'ملف مزامنة محاضرات نبض الطب MedPulse',
+            files: [file]
+          });
+          showToast('تم فتح نافذة المشاركة! اختر AirDrop للآيباد أو الإيميل.', '✉️');
+          return;
+        } catch (err) {
+          if (err.name === 'AbortError') return;
+        }
+      }
+
+      // Guaranteed fallback: 1-Click download and open user mail app
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      const subj = encodeURIComponent('ملف مزامنة محاضرات MedPulse');
+      const body = encodeURIComponent('مرحباً،\n\nتجد مرفقاً ملف مزامنة المحاضرات لفتحه في الآيباد داخل MedPulse.');
+      const mailto = email ? `mailto:${email}?subject=${subj}&body=${body}` : `mailto:?subject=${subj}&body=${body}`;
+      window.open(mailto, '_blank');
+      showToast('تم تنزيل ملف المزامنة وفتح الإيميل! أرسله لنفسك وافتحه بالآيباد.', '✉️');
+    }
+
+    // ==================== SKETCHPAD    // ==================== SKETCHPAD    // ==================== SKETCHPAD & TIMER ====================
+    let sketchCtx = null;
+    let isDrawing = false;
+    let penColor = '#10b981';
+    let penWidth = 3;
+
+    function initSketchCanvas() {
+      const canvas = document.getElementById('ipad-sketch-canvas');
+      if (!canvas) return;
+      sketchCtx = canvas.getContext('2d');
+      resizeSketchCanvas();
+
+      const getPos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+      };
+
+      const startDraw = (e) => {
+        isDrawing = true;
+        const pos = getPos(e);
+        sketchCtx.beginPath();
+        sketchCtx.moveTo(pos.x, pos.y);
+      };
+
+      const moveDraw = (e) => {
+        if (!isDrawing) return;
+        if (e.cancelable) e.preventDefault();
+        const pos = getPos(e);
+        sketchCtx.lineCap = 'round';
+        sketchCtx.lineJoin = 'round';
+        sketchCtx.strokeStyle = penColor;
+        sketchCtx.lineWidth = penWidth;
+        sketchCtx.lineTo(pos.x, pos.y);
+        sketchCtx.stroke();
+      };
+
+      const endDraw = () => { isDrawing = false; };
+
+      canvas.addEventListener('mousedown', startDraw);
+      canvas.addEventListener('mousemove', moveDraw);
+      window.addEventListener('mouseup', endDraw);
+      canvas.addEventListener('touchstart', startDraw, { passive: false });
+      canvas.addEventListener('touchmove', moveDraw, { passive: false });
+      canvas.addEventListener('touchend', endDraw);
+    }
+
+    function resizeSketchCanvas() {
+      const canvas = document.getElementById('ipad-sketch-canvas');
+      if (!canvas || !canvas.parentElement) return;
+      const rect = canvas.parentElement.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0 && (canvas.width !== rect.width || canvas.height !== rect.height)) {
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
+    }
+
+    function updatePomoDisplay() {
+      const m = String(Math.floor(state.pomoSeconds / 60)).padStart(2, '0');
+      const s = String(state.pomoSeconds % 60).padStart(2, '0');
+      document.getElementById('pomo-display').textContent = `${m}:${s}`;
+    }
+
+    function togglePomodoro() {
+      const btn = document.getElementById('pomo-toggle-btn');
+      if (state.pomoRunning) {
+        clearInterval(state.pomoInterval);
+        state.pomoRunning = false;
+        btn.textContent = 'بدء';
+      } else {
+        state.pomoRunning = true;
+        btn.textContent = 'إيقاف';
+        clearInterval(state.pomoInterval);
+        state.pomoInterval = setInterval(() => {
+          if (state.pomoSeconds > 0) {
+            state.pomoSeconds--;
+            updatePomoDisplay();
+          } else {
+            clearInterval(state.pomoInterval);
+            state.pomoRunning = false;
+            btn.textContent = 'بدء';
+            showToast('انتهى الوقت', '🎉');
+          }
+        }, 1000);
+      }
+    }
+
+    // ==================== INIT ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderAll();
+      initSketchCanvas();
+      window.addEventListener('resize', resizeSketchCanvas);
+
+      document.getElementById('brand-home-trigger').addEventListener('click', () => openDepartment('all'));
+
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tab = btn.getAttribute('data-tab');
+          if (tab === 'dashboard') state.hubLectureId = null;
+          switchTab(tab);
+        });
+      });
+
+      document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        document.getElementById('theme-icon').textContent = isDark ? '☀️' : '🌙';
+      });
+
+      document.getElementById('pomo-toggle-btn').addEventListener('click', togglePomodoro);
+      document.getElementById('pomo-reset-btn').addEventListener('click', () => {
+        clearInterval(state.pomoInterval);
+        state.pomoRunning = false;
+        state.pomoSeconds = 25 * 60;
+        document.getElementById('pomo-toggle-btn').textContent = 'بدء';
+        updatePomoDisplay();
+      });
+
+      document.getElementById('add-new-dept-btn').addEventListener('click', openDeptModalForNew);
+      document.getElementById('ribbon-add-dept-btn').addEventListener('click', openDeptModalForNew);
+      document.getElementById('close-dept-modal-btn').addEventListener('click', () => document.getElementById('dept-modal').classList.add('hidden'));
+      document.getElementById('cancel-dept-modal-btn').addEventListener('click', () => document.getElementById('dept-modal').classList.add('hidden'));
+      document.getElementById('save-dept-modal-btn').addEventListener('click', () => {
+        const nameEn = document.getElementById('dept-name-en').value.trim();
+        const nameAr = document.getElementById('dept-name-ar').value.trim() || nameEn;
+        const icon = document.getElementById('dept-icon-input').value.trim() || '🩺';
+        const themeKey = document.getElementById('dept-color-select').value || 'emerald';
+        const desc = document.getElementById('dept-desc-input').value.trim();
+        const theme = COLOR_THEMES[themeKey] || COLOR_THEMES.emerald;
+
+        if (!nameEn && !nameAr) return;
+
+        if (state.editingSubjectId) {
+          const target = state.subjects.find(s => s.id === state.editingSubjectId);
+          if (target) {
+            target.nameEn = nameEn || nameAr;
+            target.nameAr = nameAr;
+            target.icon = icon;
+            target.themeKey = themeKey;
+            target.color = theme.color;
+            target.badgeBg = theme.badgeBg;
+            target.desc = desc;
+          }
+        } else {
+          state.subjects.push({
+            id: `dept-${Date.now()}`,
+            nameEn: nameEn || nameAr,
+            nameAr,
+            icon,
+            themeKey,
+            color: theme.color,
+            badgeBg: theme.badgeBg,
+            desc
+          });
+        }
+        saveState();
+        document.getElementById('dept-modal').classList.add('hidden');
+        renderAll();
+      });
+
+      const syncModal = document.getElementById('sync-modal');
+      const emailInput = document.getElementById('sync-email-input');
+      const pinDisplay = document.getElementById('sync-pin-display');
+      const pinInput = document.getElementById('sync-pin-input');
+      const cloudStatus = document.getElementById('sync-cloud-status');
+
+      try {
+        const savedEmail = localStorage.getItem('medpulse_user_email');
+        if (savedEmail && emailInput) emailInput.value = savedEmail;
+      } catch(e) {}
+
+      document.getElementById('sync-modal-open-btn').addEventListener('click', () => {
+        currentSyncPin = 'MED-' + Math.floor(1000 + Math.random() * 9000);
+        if (pinDisplay) pinDisplay.textContent = currentSyncPin;
+        syncModal.classList.remove('hidden');
+      });
+      document.getElementById('close-sync-modal-btn').addEventListener('click', () => syncModal.classList.add('hidden'));
+
+      // 1. Save by Email (also saves under current PIN so either works on iPad!)
+      document.getElementById('cloud-sync-save-btn').addEventListener('click', async () => {
+        const email = (emailInput?.value || '').trim();
+        if (!email || !email.includes('@')) {
+          showToast('اكتب إيميلك أولاً لحفظ نسختك', '⚠️');
+          emailInput?.focus();
+          return;
+        }
+        try { localStorage.setItem('medpulse_user_email', email); } catch(e) {}
+        if (cloudStatus) cloudStatus.textContent = 'جاري الرفع...';
+        showToast('جاري رفع نسختك للسحابة...', '⏳');
+
+        const payload = buildSyncPayload();
+        // Save under both email and PIN for maximum flexibility
+        const resEmail = await cloudSave(email, payload);
+        await cloudSave(currentSyncPin, payload);
+
+        if (resEmail.success) {
+          if (cloudStatus) cloudStatus.textContent = 'محفوظ سحابياً ✓';
+          showToast(`تم الحفظ السحابي بنجاح! في الآيباد اكتب نفس الإيميل (${email}) واضغط "استرجاع من إيميلي".`, '✅');
+        } else {
+          if (cloudStatus) cloudStatus.textContent = 'استخدم AirDrop';
+          showToast('شبكة الإنترنت تمنع السحابة؟ اضغط زر "إرسال مباشر لإيميلي أو AirDrop" لنقلها في ثانية!', '💡');
+        }
+      });
+
+      // 2. Load by Email
+      document.getElementById('cloud-sync-load-btn').addEventListener('click', async () => {
+        const email = (emailInput?.value || '').trim();
+        if (!email || !email.includes('@')) {
+          showToast('اكتب إيميلك للاسترجاع منه', '⚠️');
+          emailInput?.focus();
+          return;
+        }
+        if (cloudStatus) cloudStatus.textContent = 'جاري البحث...';
+        showToast(`جاري استرجاع محاضراتك من الإيميل: ${email}...`, '⏳');
+        const res = await cloudLoad(email);
+        if (res.success && res.payload) {
+          if (cloudStatus) cloudStatus.textContent = 'تم الاسترجاع ✓';
+          const merge = document.getElementById('sync-merge-mode-chk')?.checked;
+          applySyncPayload(res.payload, merge);
+        } else {
+          if (cloudStatus) cloudStatus.textContent = 'لم يتم العثور';
+          showToast('لم يتم العثور على نسخة لهذا الإيميل. تأكد من ضغط "حفظ سحابي" أولاً من لابتوبك.', '⚠️');
+        }
+      });
+
+      // 3. Load by PIN
+      document.getElementById('sync-pin-load-btn').addEventListener('click', async () => {
+        const pin = (pinInput?.value || '').trim();
+        if (!pin) {
+          showToast('اكتب رمز المزامنة المكون من 6 أرقام (مثال: MED-4829)', '⚠️');
+          pinInput?.focus();
+          return;
+        }
+        showToast(`جاري البحث بالرمز ${pin}...`, '⏳');
+        const res = await cloudLoad(pin);
+        if (res.success && res.payload) {
+          const merge = document.getElementById('sync-merge-mode-chk')?.checked;
+          applySyncPayload(res.payload, merge);
+        } else {
+          showToast('الرمز غير موجود، تأكد من كتابته بشكل مطابق أو استخدم الإيميل.', '⚠️');
+        }
+      });
+
+      // 4. Native AirDrop / Email Share Button
+      document.getElementById('email-share-native-btn').addEventListener('click', shareViaEmailOrAirDrop);
+
+      // 5. 1-Click Export File
+      document.getElementById('export-sync-file-btn').addEventListener('click', () => {
+        const payload = buildSyncPayload();
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `MedPulse_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم تحميل ملف المزامنة!', '💾');
+      });
+
+      // 6. 1-Click Import File
+      document.getElementById('import-sync-file-input').addEventListener('change', async (e) => {
+        if (e.target.files && e.target.files[0]) {
+          try {
+            const parsed = JSON.parse(await e.target.files[0].text());
+            const merge = document.getElementById('sync-merge-mode-chk')?.checked;
+            applySyncPayload(parsed, merge);
+          } catch (err) {
+            showToast('ملف غير صالح', '⚠️');
+          }
+        }
+      });
+
+      document.getElementById('cta-upload-btn').addEventListener('click', () => switchTab('upload'));
+      document.getElementById('cta-study-due-btn').addEventListener('click', () => switchTab('flashcards'));
+      document.getElementById('reset-subject-filter-btn').addEventListener('click', () => openDepartment('all'));
+      document.getElementById('back-to-departments-btn').addEventListener('click', () => openDepartment('all'));
+      document.getElementById('dept-add-lecture-btn').addEventListener('click', () => switchTab('upload'));
+      document.getElementById('lecture-search-input').addEventListener('input', renderDashboard);
+
+      document.getElementById('delete-all-lectures-btn').addEventListener('click', () => {
+        state.lectures = [];
+        state.selectedLectureId = 'all';
+        state.hubLectureId = null;
+        saveState();
+        renderAll();
+      });
+
+      document.getElementById('hub-back-to-dept-btn').addEventListener('click', () => { state.hubLectureId = null; renderAll(); });
+      document.getElementById('hub-edit-lecture-btn').addEventListener('click', () => { if (state.hubLectureId) openEditLectureModal(state.hubLectureId); });
+      document.getElementById('hub-delete-lecture-btn').addEventListener('click', () => { if (state.hubLectureId) deleteLectureById(state.hubLectureId); });
+      document.getElementById('hub-go-flashcards-btn').addEventListener('click', () => { state.selectedLectureId = state.hubLectureId; state.fcIndex = 0; switchTab('flashcards'); });
+      document.getElementById('hub-go-quiz-btn').addEventListener('click', () => { state.selectedLectureId = state.hubLectureId; state.quizIndex = 0; switchTab('quiz'); });
+      document.getElementById('hub-go-summary-btn').addEventListener('click', () => { state.selectedLectureId = state.hubLectureId; switchTab('summary'); });
+
+      const returnToHubOrDashboard = () => {
+        if (state.selectedLectureId && state.selectedLectureId !== 'all') state.hubLectureId = state.selectedLectureId;
+        switchTab('dashboard');
+      };
+      document.getElementById('fc-back-to-hub-btn').addEventListener('click', returnToHubOrDashboard);
+      document.getElementById('quiz-back-to-hub-btn').addEventListener('click', returnToHubOrDashboard);
+      document.getElementById('sum-back-to-hub-btn').addEventListener('click', returnToHubOrDashboard);
+
+      const editLecModal = document.getElementById('edit-lecture-modal');
+      document.getElementById('close-edit-lec-modal-btn').addEventListener('click', () => editLecModal.classList.add('hidden'));
+      document.getElementById('cancel-edit-lec-btn').addEventListener('click', () => editLecModal.classList.add('hidden'));
+      document.getElementById('edit-lec-file-input').addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          extractFileText(e.target.files[0], 'edit-lec-summary-text');
+          document.getElementById('edit-lec-regenerate-chk').checked = true;
+        }
+      });
+      document.getElementById('save-edit-lec-btn').addEventListener('click', () => {
+        const lec = state.lectures.find(l => l.id === state.editingLectureId);
+        if (!lec) return;
+        const newTitle = document.getElementById('edit-lec-title').value.trim() || lec.title;
+        const newSub = document.getElementById('edit-lec-subject').value;
+        const newText = document.getElementById('edit-lec-summary-text').value.trim();
+        const regen = document.getElementById('edit-lec-regenerate-chk').checked;
+
+        lec.title = newTitle;
+        lec.subject = newSub;
+        if (newText) {
+          lec.summary = newText.split(/\n+/).map(s => s.trim()).filter(Boolean);
+          if (regen) {
+            const generated = generateLectureAssetsFromText(newSub, newTitle, newText);
+            lec.flashcards = generated.flashcards;
+            lec.quizzes = generated.quizzes;
+          }
+        }
+        saveState();
+        editLecModal.classList.add('hidden');
+        renderAll();
+      });
+
+      const dropzone = document.getElementById('dropzone-area');
+      const fileInput = document.getElementById('lecture-file-input');
+      dropzone.addEventListener('click', () => fileInput.click());
+      dropzone.addEventListener('dragover', (e) => { e.preventDefault(); });
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) extractFileText(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) extractFileText(e.target.files[0]);
+      });
+
+      document.getElementById('upload-lecture-text').addEventListener('input', updateCharCount);
+
+      document.getElementById('load-sample-lecture-btn').addEventListener('click', () => {
+        document.getElementById('upload-subject-select').value = state.selectedSubject !== 'all' ? state.selectedSubject : (state.subjects[0]?.id || 'anatomy');
+        document.getElementById('upload-lecture-title').value = 'Brachial Plexus';
+        document.getElementById('upload-lecture-text').value = [
+          'Brachial Plexus Roots: Originate from ventral rami of C5, C6, C7, C8, and T1 spinal nerves.',
+          'Erb-Duchenne Palsy (C5-C6): Causes Waiter\'s tip deformity.',
+          'Klumpke Palsy (C8-T1): Causes Total Claw Hand and Horner Syndrome.',
+          'Axillary Nerve (C5-C6): Injured in surgical neck fractures of humerus, paralyzing deltoid.',
+          'Radial Nerve (C5-T1): Injured in midshaft spiral groove fractures, presenting with Wrist Drop.'
+        ].join('\n\n');
+        updateCharCount();
+      });
+
+      document.getElementById('clear-upload-btn').addEventListener('click', () => {
+        document.getElementById('upload-lecture-title').value = '';
+        document.getElementById('upload-lecture-text').value = '';
+        document.getElementById('upload-file-status').classList.add('hidden');
+        updateCharCount();
+      });
+
+      document.getElementById('process-lecture-btn').addEventListener('click', () => {
+        const subject = document.getElementById('upload-subject-select').value;
+        const title = document.getElementById('upload-lecture-title').value.trim() || 'Lecture';
+        const rawText = document.getElementById('upload-lecture-text').value.trim();
+        if (!rawText) return;
+
+        const newLec = generateLectureAssetsFromText(subject, title, rawText);
+        state.lectures.unshift(newLec);
+        saveState();
+        document.getElementById('upload-lecture-title').value = '';
+        document.getElementById('upload-lecture-text').value = '';
+        updateCharCount();
+        openLectureHub(newLec.id);
+      });
+
+      document.getElementById('fc-lecture-select').addEventListener('change', (e) => {
+        state.selectedLectureId = e.target.value;
+        state.fcIndex = 0;
+        state.fcFlipped = false;
+        renderAll();
+      });
+
+      document.getElementById('fc-mode-anki').addEventListener('click', () => { state.fcMode = 'anki'; renderFlashcardsView(); });
+      document.getElementById('fc-mode-cloze').addEventListener('click', () => { state.fcMode = 'cloze'; renderFlashcardsView(); });
+      document.getElementById('fc-mode-list').addEventListener('click', () => { state.fcMode = 'list'; renderFlashcardsView(); });
+
+      document.querySelectorAll('.srs-queue-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.srsQueueFilter = btn.getAttribute('data-srs-filter');
+          state.fcIndex = 0;
+          state.fcFlipped = false;
+          renderFlashcardsView();
+        });
+      });
+
+      const flipCard = () => { state.fcFlipped = !state.fcFlipped; renderFlashcardsView(); };
+      document.getElementById('fc-card-wrapper').addEventListener('click', flipCard);
+      document.getElementById('fc-flip-btn').addEventListener('click', flipCard);
+
+      document.getElementById('fc-prev-btn').addEventListener('click', () => { state.fcIndex--; state.fcFlipped = false; renderFlashcardsView(); });
+      document.getElementById('fc-next-btn').addEventListener('click', () => { state.fcIndex++; state.fcFlipped = false; renderFlashcardsView(); });
+
+      document.getElementById('fc-shuffle-btn').addEventListener('click', () => {
+        state.lectures.forEach(lec => lec.flashcards.sort(() => Math.random() - 0.5));
+        state.fcIndex = 0;
+        state.fcFlipped = false;
+        renderFlashcardsView();
+      });
+
+      document.getElementById('fc-edit-current-btn').addEventListener('click', () => {
+        const cur = getActiveFlashcards()[state.fcIndex];
+        if (cur) openFlashcardModalForEdit(cur.lectureId, cur.id);
+      });
+
+      document.getElementById('fc-delete-current-btn').addEventListener('click', () => {
+        const cur = getActiveFlashcards()[state.fcIndex];
+        if (cur) deleteFlashcard(cur.lectureId, cur.id);
+      });
+
+      document.querySelectorAll('.srs-rate-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const rating = btn.getAttribute('data-srs');
+          const current = getActiveFlashcards()[state.fcIndex];
+          if (current) {
+            const targetLec = state.lectures.find(l => l.id === current.lectureId);
+            const targetCard = targetLec?.flashcards.find(f => f.id === current.id);
+            if (targetCard) {
+              applySRSRatingToCard(targetCard, rating);
+              saveState();
+            }
+          }
+          state.fcIndex++;
+          state.fcFlipped = false;
+          renderAll();
+        });
+      });
+
+      document.getElementById('cloze-reveal-all-btn').addEventListener('click', () => {
+        document.querySelectorAll('#fc-cloze-list .cloze-hidden').forEach(el => el.classList.toggle('revealed'));
+      });
+
+      const fcModal = document.getElementById('fc-add-modal');
+      document.getElementById('fc-add-modal-btn').addEventListener('click', () => {
+        if (state.lectures.length === 0) return;
+        state.editingCardId = null;
+        document.getElementById('fc-modal-title').textContent = 'بطاقة جديدة';
+        document.getElementById('new-fc-front').value = '';
+        document.getElementById('new-fc-back').value = '';
+        document.getElementById('new-fc-hint').value = '';
+        fcModal.classList.remove('hidden');
+      });
+      document.getElementById('fc-close-modal-btn').addEventListener('click', () => fcModal.classList.add('hidden'));
+      document.getElementById('fc-cancel-modal-btn').addEventListener('click', () => fcModal.classList.add('hidden'));
+      document.getElementById('fc-save-card-btn').addEventListener('click', () => {
+        const front = document.getElementById('new-fc-front').value.trim();
+        const back = document.getElementById('new-fc-back').value.trim();
+        const hint = document.getElementById('new-fc-hint').value.trim();
+        if (!front || !back) return;
+
+        if (state.editingCardId) {
+          const lec = state.lectures.find(l => l.id === state.editingLectureId);
+          const card = lec?.flashcards.find(f => f.id === state.editingCardId);
+          if (card) { card.front = front; card.back = back; card.hint = hint; card.clozeWord = back.split(' ')[0]; }
+        } else {
+          const targetLec = state.lectures.find(l => l.id === state.selectedLectureId) || state.lectures[0];
+          if (targetLec) {
+            targetLec.flashcards.push(ensureCardSRSFields({
+              id: `fc-custom-${Date.now()}`,
+              front,
+              back,
+              hint,
+              status: 'due',
+              clozeWord: back.split(' ')[0]
+            }));
+          }
+        }
+        saveState();
+        fcModal.classList.add('hidden');
+        renderAll();
+      });
+
+      document.getElementById('quiz-lecture-select').addEventListener('change', (e) => { state.selectedLectureId = e.target.value; state.quizIndex = 0; renderAll(); });
+      document.getElementById('quiz-prev-q-btn').addEventListener('click', () => { state.quizIndex--; renderQuizView(); });
+      document.getElementById('quiz-next-q-btn').addEventListener('click', () => { state.quizIndex++; renderQuizView(); });
+      document.getElementById('quiz-restart-btn').addEventListener('click', () => { state.quizAnswered = {}; state.quizIndex = 0; renderQuizView(); });
+
+      const quizModal = document.getElementById('quiz-modal');
+      document.getElementById('quiz-add-q-btn').addEventListener('click', () => {
+        if (state.lectures.length === 0) return;
+        state.editingQuizIndex = null;
+        document.getElementById('quiz-modal-title').textContent = 'سؤال جديد';
+        document.getElementById('qm-question').value = '';
+        document.getElementById('qm-opt-0').value = '';
+        document.getElementById('qm-opt-1').value = '';
+        document.getElementById('qm-opt-2').value = '';
+        document.getElementById('qm-opt-3').value = '';
+        document.getElementById('qm-answer').value = '0';
+        document.getElementById('qm-explanation').value = '';
+        quizModal.classList.remove('hidden');
+      });
+
+      document.getElementById('quiz-edit-q-btn').addEventListener('click', () => {
+        const cur = getActiveQuizzes()[state.quizIndex];
+        if (!cur) return;
+        state.editingLectureId = cur.lectureId;
+        state.editingQuizIndex = cur.rawIdx;
+        document.getElementById('quiz-modal-title').textContent = 'تعديل السؤال';
+        document.getElementById('qm-question').value = cur.q;
+        document.getElementById('qm-opt-0').value = cur.options[0] || '';
+        document.getElementById('qm-opt-1').value = cur.options[1] || '';
+        document.getElementById('qm-opt-2').value = cur.options[2] || '';
+        document.getElementById('qm-opt-3').value = cur.options[3] || '';
+        document.getElementById('qm-answer').value = String(cur.answer || 0);
+        document.getElementById('qm-explanation').value = cur.explanation || '';
+        quizModal.classList.remove('hidden');
+      });
+
+      document.getElementById('quiz-delete-q-btn').addEventListener('click', () => {
+        const cur = getActiveQuizzes()[state.quizIndex];
+        if (!cur) return;
+        const lec = state.lectures.find(l => l.id === cur.lectureId);
+        if (lec) { lec.quizzes.splice(cur.rawIdx, 1); saveState(); renderAll(); }
+      });
+
+      document.getElementById('quiz-close-modal-btn').addEventListener('click', () => quizModal.classList.add('hidden'));
+      document.getElementById('quiz-cancel-modal-btn').addEventListener('click', () => quizModal.classList.add('hidden'));
+      document.getElementById('quiz-save-q-btn').addEventListener('click', () => {
+        const qText = document.getElementById('qm-question').value.trim();
+        if (!qText) return;
+        const opts = [
+          document.getElementById('qm-opt-0').value.trim() || 'A',
+          document.getElementById('qm-opt-1').value.trim() || 'B',
+          document.getElementById('qm-opt-2').value.trim() || 'C',
+          document.getElementById('qm-opt-3').value.trim() || 'D'
+        ];
+        const ans = parseInt(document.getElementById('qm-answer').value, 10) || 0;
+        const exp = document.getElementById('qm-explanation').value.trim();
+
+        if (state.editingQuizIndex !== null) {
+          const lec = state.lectures.find(l => l.id === state.editingLectureId);
+          if (lec && lec.quizzes[state.editingQuizIndex]) {
+            lec.quizzes[state.editingQuizIndex] = { q: qText, hintAr: '', options: opts, answer: ans, explanation: exp };
+          }
+        } else {
+          const targetLec = state.lectures.find(l => l.id === state.selectedLectureId) || state.lectures[0];
+          if (targetLec) targetLec.quizzes.push({ q: qText, hintAr: '', options: opts, answer: ans, explanation: exp });
+        }
+        saveState();
+        quizModal.classList.add('hidden');
+        renderAll();
+      });
+
+      document.getElementById('summary-lecture-select').addEventListener('change', (e) => { state.selectedLectureId = e.target.value; renderSummaryView(); });
+
+      document.querySelectorAll('.pen-color-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          penColor = btn.getAttribute('data-color');
+          document.querySelectorAll('.pen-color-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-emerald-500'));
+          btn.classList.add('ring-2', 'ring-offset-2', 'ring-emerald-500');
+        });
+      });
+      document.getElementById('pen-size-slider').addEventListener('input', (e) => { penWidth = parseInt(e.target.value, 10); });
+      document.getElementById('clear-canvas-btn').addEventListener('click', () => {
+        const canvas = document.getElementById('ipad-sketch-canvas');
+        if (sketchCtx && canvas) sketchCtx.clearRect(0, 0, canvas.width, canvas.height);
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+        if (state.activeTab === 'flashcards' && state.fcMode === 'anki') {
+          if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+          else if (e.code === 'ArrowLeft') { state.fcIndex++; state.fcFlipped = false; renderFlashcardsView(); }
+          else if (e.code === 'ArrowRight') { state.fcIndex--; state.fcFlipped = false; renderFlashcardsView(); }
+          else if (['Digit1', 'Digit2', 'Digit3', 'Digit4'].includes(e.code)) {
+            const map = { Digit1: 'again', Digit2: 'hard', Digit3: 'good', Digit4: 'easy' };
+            document.querySelector(`.srs-rate-btn[data-srs="${map[e.code]}"]`)?.click();
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
